@@ -1,18 +1,4 @@
 def SetupPayloads(inp):
-	common_payload = {
-		"paramFileName.$":"$.input.pfname",
-		"startLayerNr.$":"$.input.startLayerNr",
-		"endLayerNr.$":"$.input.endLayerNr",
-		"nFrames.$":"$.input.nFrames",
-		"numProcs.$":"$.input.numProcs",
-		"numBlocks.$":"$.input.numBlocks",
-		"timePath.$":"$.input.timePath",
-		"StartNrFirstLayer.$":"$.input.StartFileNrFirstLayer",
-		"NrFilesPerSweep.$":"$.input.NrFilesPerSweep",
-		"FileStem.$":"$.input.FileStem",
-		"SeedFolder.$":"$.input.SeedFolder",
-		"StartNr.$":"$.input.StartNr",
-		"EndNr.$":"$.input.EndNr"}
 	flow_input = {
 		"input": {
 			"inject_source_endpoint_id":inp['sourceEP'],
@@ -51,7 +37,7 @@ def SetupPayloads(inp):
 			'FileStem':'$.input.FileStem',
 			'SeedFolder':'$.input.SeedFolder',
 			'paramFileName':'$.input.paramFileName',
-			}] for idx in range(inp['numBlocks'])})
+			} for idx in range(inp['numBlocks'])]})
 	flow_input['input'].update({'indexrefine_tasks':[{
 			'endpoint.$':'$.input.funcx_endpoint_compute',
 			'function.$':'$.input.remote_indexrefine_funcx_id',

@@ -84,7 +84,7 @@ if __name__ == '__main__':
 	inp.update({'endNr':endNr})
 	
 	flow_input = SetupPayloads(inp)
-	# ~ print(flow_input)
+	pprint(flow_input)
 	
 	ff_cli = FFFlow()
 	pprint(ff_cli.flow_definition)
