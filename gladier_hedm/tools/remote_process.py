@@ -17,8 +17,12 @@ def remote_find_grains(**event): # startLayerNr endLayerNr timePath FileStem See
 		os.chdir(topdir)
 	subprocess.call('tar -czf recon_'+time_path+'.tar.gz *_Analysis_Time_'+time_path+'*',shell=True)
 
+
+
+
 @generate_flow_definition(modifiers={
-    remote_find_grains: {'WaitTime': 7200}
+    remote_find_grains: {'WaitTime': 7200},
+    
 })
 class RemoteFindGrains(GladierBaseTool):
 

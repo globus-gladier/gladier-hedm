@@ -60,7 +60,6 @@ class RemotePrepare(GladierBaseTool):
         'SeedFolder',
         'StartNr',
         'EndNr',
-        'flags',
         'funcx_endpoint_compute',
     ]
 
