@@ -33,7 +33,6 @@ class RemoteFindGrains(GladierBaseTool):
         'timePath',
         'FileStem',
         'SeedFolder',
-        'flags',
         'funcx_endpoint_compute',
     ]
 

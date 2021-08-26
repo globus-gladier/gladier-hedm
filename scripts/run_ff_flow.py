@@ -1,5 +1,6 @@
 from gladier_hedm.flows.ff_flow import FFFlow
 from gladier_hedm.endpoints import deployment_map
+import gladier_hedm.setup_payloads
 import time, json, sys, os, copy
 import datetime
 import argparse
@@ -58,5 +59,6 @@ if __name__ == '__main__':
 	seedFolder = executePath
 
 	## Set up payloads
+	flow_input = setup_payloads(paramFN,startLayerNr,endLayerNr,)
 
 
