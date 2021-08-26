@@ -20,7 +20,7 @@ setup(
     description='The HEDM Gladier Client',
     url='https://github.com/globus-gladier/gladier-hedm',
     maintainer='Hemant Sharma',
-    maintainer_email='',
+    maintainer_email='hsharma@anl.gov',
     version=version_ns['__version__'],
     packages=find_packages(),
     install_requires=install_requires,

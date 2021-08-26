@@ -37,7 +37,7 @@ def SetupPayloads(inp):
 			"StartNr":inp['startNr'],
 			"EndNr":inp['endNr'],}
 		}
-	flow_input['input'].update('tasks_multiple':[{
+	flow_input['input'].update({'tasks_multiple':[{
 			'startLayerNr':'$.input.startLayerNr',
 			'endLayerNr':'$.input.endLayerNr',
 			'numProcs':'$.input.numProcs',
@@ -48,15 +48,15 @@ def SetupPayloads(inp):
 			'FileStem':'$.input.FileStem',
 			'SeedFolder':'$.input.SeedFolder',
 			'paramFileName':'$.input.paramFileName',
-			}] for idx in range(inp['numBlocks']))
-	flow_input['input'].update('indexrefine_tasks':[{
+			}] for idx in range(inp['numBlocks'])})
+	flow_input['input'].update({'indexrefine_tasks':[{
 			'endpoint.$':'$.input.funcx_endpoint_compute',
 			'function.$':'$.input.remote_indexrefine_funcx_id',
 			'payload.$':f'$.input.tasks_multiple[{idx}]'
-		} for idx in range(inp['numBlocks'])])
-	flow_input['input'].update('peaksearch_tasks':[{
+		} for idx in range(inp['numBlocks'])]})
+	flow_input['input'].update({'peaksearch_tasks':[{
 			'endpoint.$':'$.input.funcx_endpoint_compute',
 			'function.$':'$.input.remote_peaksearch_funcx_id',
 			'payload.$':f'$.input.tasks_multiple[{idx}]'
-		} for idx in range(inp['numBlocks'])])
+		} for idx in range(inp['numBlocks'])]})
 	return flow_input
