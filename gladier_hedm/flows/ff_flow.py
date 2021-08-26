@@ -3,7 +3,7 @@
 from gladier import GladierBaseClient, generate_flow_definition
 
 
-@generate_flow_definition(modifiers={ # Later
+@generate_flow_definition(modifiers={
 })
 class FFFlow(GladierBaseClient):
     #globus_group = '' # Later
