@@ -15,14 +15,15 @@ def SetupPayloads(inp):
 		"EndNr.$":"$.input.EndNr"}
 	flow_input = {
 		"input": {
-			"source_endpoint":inp['sourceEP'],
-			"source_path":inp['sourcePath'],
-			"execute_endpoint":inp['remoteDataEP'],
+			"inject_source_endpoint_id":inp['sourceEP'],
+			"inject_source_path":inp['sourcePath'],
+			"inject_destination_endpoint_id":inp['remoteDataEP'],
+			"extract_source_endpoint_id":inp['remoteDataEP'],
 			"funcx_endpoint_compute":inp['funcx_endpoint_compute'],
-			"execute_path":inp['executePath'],
-			"execute_result_path":inp['executeResultPath'],
-			"result_endpoint":inp['destEP'],
-			"result_path":inp['resultPath'],
+			"inject_destination_path":inp['executePath'],
+			"extract_source_path":inp['executeResultPath'],
+			"extract_destination_endpoint_id":inp['destEP'],
+			"extract_destination_path":inp['resultPath'],
 			"paramFileName":inp['pfName'],
 			"startLayerNr":inp['startLayerNr'],
 			"endLayerNr":inp['endLayerNr'],
@@ -35,7 +36,8 @@ def SetupPayloads(inp):
 			"FileStem":inp['fileStem'],
 			"SeedFolder":inp['seedFolder'],
 			"StartNr":inp['startNr'],
-			"EndNr":inp['endNr'],}
+			"EndNr":inp['endNr'],
+			'extract_recursive':True}
 		}
 	flow_input['input'].update({'tasks_multiple':[{
 			'startLayerNr':'$.input.startLayerNr',
