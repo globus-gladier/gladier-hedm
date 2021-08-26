@@ -37,7 +37,8 @@ def SetupPayloads(inp):
 			"SeedFolder":inp['seedFolder'],
 			"StartNr":inp['startNr'],
 			"EndNr":inp['endNr'],
-			'extract_recursive':True}
+			'extract_recursive':True,
+			'inject_recursive':True,}
 		}
 	flow_input['input'].update({'tasks_multiple':[{
 			'startLayerNr':'$.input.startLayerNr',

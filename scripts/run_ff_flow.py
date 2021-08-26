@@ -4,7 +4,7 @@ from gladier_hedm.setup_payloads import SetupPayloads
 import time, json, sys, os, copy
 import datetime
 import argparse
-import pprint
+from pprint import pprint
 
 def arg_parse():
 	parser = argparse.ArgumentParser(description='''MIDAS_FF, Parameter file must be in the same folder as the desired output folder(SeedFolder)''', formatter_class=argparse.RawTextHelpFormatter)
@@ -88,12 +88,12 @@ if __name__ == '__main__':
 	
 	ff_cli = FFFlow()
 	pprint(ff_cli.flow_definition)
-	# ~ ff_flow_label = f'{experimentName}_{fileStem}_{startLayerNr}_{endLayerNr}'
+	ff_flow_label = f'{experimentName}_{fileStem}_{startLayerNr}_{endLayerNr}'
 	
-	# ~ ff_flow = ff_cli.run_flow(flow_input = flow_input, label = ff_flow_label)
-	# ~ action_id = ff_flow['action_id']
-	# ~ ff_cli.progress(action_id)
-	# ~ pprint(ff_cli.get_status(action_id))
+	ff_flow = ff_cli.run_flow(flow_input = flow_input)
+	action_id = ff_flow['action_id']
+	ff_cli.progress(action_id)
+	print(ff_cli.get_status(action_id))
 
 	# ~ print('run_id : ' + ff_flow['action_id'])
 

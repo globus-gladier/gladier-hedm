@@ -7,7 +7,7 @@ class Inject(GladierBaseTool):
         'Comment': 'Inject data',
         'StartAt': 'Inject',
         'States': {
-            'Transfer': {
+            'Inject': {
                 'Comment': 'Inject data',
                 'Type': 'Action',
                 'ActionUrl': 'https://actions.automate.globus.org/transfer/transfer',
