@@ -15,4 +15,5 @@ class FFFlow(GladierBaseClient):
         'galdier_hedm.tools.remote_transforms.RemoteTransforms',
         'galdier_hedm.tools.remote_indexrefine.RemoteIndexrefine',
         'galdier_hedm.tools.remote_process.RemoteFindGrains',
+        'galdier_hedm.tools.transfer_extract.Extract',
     ]
