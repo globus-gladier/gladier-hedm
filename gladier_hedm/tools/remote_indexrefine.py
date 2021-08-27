@@ -19,7 +19,7 @@ def remote_indexrefine(**event): # startLayerNr endLayerNr numProcs numBlocks bl
 		subprocess.call(os.path.expanduser("~/opt/MIDAS/FF_HEDM/bin/FitPosOrStrainsOMP")+' paramstest.txt '+blockNr+' '+numBlocks+' '+str(nSpotsToIndex)+' '+str(numProcs),shell=True)
 
 @generate_flow_definition(modifiers={
-    remote_indexrefine: {'WaitTime': 25000,
+    remote_indexrefine: {'WaitTime': 7200,
 		'tasks':'$.input.indexrefine_tasks',}
 })
 class RemoteIndexrefine(GladierBaseTool):

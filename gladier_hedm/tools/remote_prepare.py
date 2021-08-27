@@ -17,13 +17,13 @@ def remote_prepare(**event):  #paramFileName startLayerNr endLayerNr timePath St
 	topdir = event.get('SeedFolder')
 	startNr = int(event.get('StartNr'))
 	endNr = int(event.get('EndNr'))
+	darkFN = even.get('darkFN')
+	paramContents = open(paramFN).readlines()
 	os.chdir(topdir)
 	baseNameParamFN = paramFN.split('/')[-1]
 	homedir = os.path.expanduser('~')
 	nFrames = endNr - startNr + 1
 	for layerNr in range(startLayerNr,endLayerNr+1):
-		# Single node commands
-		startTime = time.time()
 		thisStartNr = startNrFirstLayer + (layerNr-1)*nrFilesPerSweep
 		folderName = fStem + '_Layer_' + str(layerNr).zfill(4) + '_Analysis_Time_' + time_path
 		thisDir = topdir + '/' + folderName + '/'
@@ -35,6 +35,7 @@ def remote_prepare(**event):  #paramFileName startLayerNr endLayerNr timePath St
 			thisPF.write(line)
 		thisPF.write('RawFolder '+topdir+'\n')
 		thisPF.write('SeedFolder '+topdir+'\n')
+		thisPF.write('Dark '+topdir+'/'+darkFN+'\n')
 		thisPF.write('Folder '+thisDir+'\n')
 		thisPF.write('LayerNr '+str(layerNr)+'\n')
 		thisPF.write('StartFileNr '+str(thisStartNr)+'\n')
@@ -58,6 +59,7 @@ class RemotePrepare(GladierBaseTool):
         'NrFilesPerSweep',
         'FileStem',
         'SeedFolder',
+        'darkFN',
         'StartNr',
         'EndNr',
         'funcx_endpoint_compute',

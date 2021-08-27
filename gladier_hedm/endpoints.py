@@ -25,6 +25,7 @@ class ThetaClutchDeployment(BaseDeployment):
     flow_input = {
         'input': {
             'remote_dir': '/lus/theta-fs0/projects/APSPolarisI2E/HEDM/',
+            'source_dir': '/data/tomo1/',
         }
     }
 
@@ -43,6 +44,7 @@ class ThetaVoyagerDeployment(BaseDeployment):
     flow_input = {
         'input': {
             'remote_dir': '/lus/theta-fs0/projects/APSPolarisI2E/HEDM/',
+            'source_dir': '/gdata/dm/1ID/2021/',
         }
     }
 

@@ -21,9 +21,10 @@ def SetupPayloads(inp):
 			"NrFilesPerSweep":inp['nrFilesPerSweep'],
 			"FileStem":inp['fileStem'],
 			"SeedFolder":inp['seedFolder'],
+			"darkFN":inp['darkFN'],
 			"StartNr":inp['startNr'],
 			"EndNr":inp['endNr'],
-			'extract_recursive':True,
+			'extract_recursive':False,
 			'inject_recursive':True,}
 		}
 	flow_input['input'].update({'tasks_multiple':[{

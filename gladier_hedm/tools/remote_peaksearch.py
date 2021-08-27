@@ -20,7 +20,7 @@ def remote_peaksearch(**event): # startLayerNr endLayerNr nFrames numProcs numBl
 		subprocess.call(os.path.expanduser("~/opt/MIDAS/FF_HEDM/bin/PeaksFittingOMP")+' '+baseNameParamFN+' '+ blockNr + ' ' + numBlocks + ' '+str(nFrames)+' '+str(numProcs),shell=True)
 
 @generate_flow_definition(modifiers={
-    remote_peaksearch: {'WaitTime': 25000,
+    remote_peaksearch: {'WaitTime': 7200,
 		'tasks':'$.input.peaksearch_tasks',}
 })
 class RemotePeaksearch(GladierBaseTool):
