@@ -1,3 +1,5 @@
+# Example: python scripts/run_ff_flow.py -nCPUs=32 -experimentName=KeneseiOct20 -numNodes=2 -startLayerNr=1 -endLayerNr=1 -paramFile=PS_analysis.txt -deployment=theta-clutch
+
 from gladier_hedm.flows.ff_flow import FFFlow
 from gladier_hedm.endpoints import deployment_map
 from gladier_hedm.setup_payloads import SetupPayloads
