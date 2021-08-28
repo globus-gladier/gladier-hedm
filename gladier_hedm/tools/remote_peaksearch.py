@@ -1,7 +1,14 @@
 from gladier import GladierBaseTool, generate_flow_definition
 
+def remote_peaksearch_args_builder(**data):
+	return [{
+		'endpoint':data.get('funcx_endpoint_compute','endpoint-not-found!'),
+		'function':data.get('remote_peaksearch_funcx_id','function-id-not-found'),
+		'payload': payload,
+	} for payload in data.get('multipletasks',[])]
+
 def remote_peaksearch(**event): # startLayerNr endLayerNr nFrames numProcs numBlocks blockNr timePath FileStem SeedFolder paramFileName
-	import os, subprocess
+	import os, subprocess, shutil
 	startLayerNr = int(event.get('startLayerNr'))
 	endLayerNr = int(event.get('endLayerNr'))
 	nFrames = int(event.get('nFrames'))
@@ -17,18 +24,32 @@ def remote_peaksearch(**event): # startLayerNr endLayerNr nFrames numProcs numBl
 		folderName = fStem + '_Layer_' + str(layerNr).zfill(4) + '_Analysis_Time_' + time_path
 		thisDir = topdir + '/' + folderName + '/'
 		os.chdir(thisDir)
-		subprocess.call(os.path.expanduser("~/opt/MIDAS/FF_HEDM/bin/PeaksFittingOMP")+' '+baseNameParamFN+' '+ blockNr + ' ' + numBlocks + ' '+str(nFrames)+' '+str(numProcs),shell=True)
+		shutil.copy2('hkls.csv','hkls_ps.csv')
+		subprocess.call(os.path.expanduser("~/opt/MIDAS/FF_HEDM/bin/PeaksFittingOMP")+' '+baseNameParamFN+' '+ str(blockNr) + ' ' + str(numBlocks) + ' '+str(nFrames)+' '+str(numProcs),shell=True)
+	return 'done'
 
 @generate_flow_definition(modifiers={
     remote_peaksearch: {'WaitTime': 7200,
-		'tasks':'$.input.peaksearch_tasks',}
+		# ~ }
+		'tasks':'$.RemotePeaksearchArgsBuilder.details.result[0]'}
 })
 class RemotePeaksearch(GladierBaseTool):
     funcx_functions = [
-        remote_peaksearch
+		remote_peaksearch_args_builder,
+        remote_peaksearch,
     ]
     required_input = [
-		'remote_peaksearch_funcx_id',
+		'multipletasks',
+		# ~ 'startLayerNr',
+		# ~ 'endLayerNr',
+		# ~ 'nFrames',
+		# ~ 'numProcs',
+		# ~ 'numBlocks',
+		# ~ 'timePath',
+		# ~ 'FileStem',
+		# ~ 'SeedFolder',
+		# ~ 'paramFileName',
+        # ~ 'remote_peaksearch_funcx_id',
         'funcx_endpoint_compute',
     ]
 

@@ -87,9 +87,9 @@ if __name__ == '__main__':
 	
 	ff_cli = FFFlow()
 	pprint(ff_cli.flow_definition)
-	ff_flow_label = f'{args.experimentName}_{fileStem}_{int(args.startLayerNr)}_{int(args.endLayerNr)}'
+	ff_flow_label = f'{args.experimentName}_{fileStem}_{args.startLayerNr}_{args.endLayerNr}_{startNrFirstLayer}'
 	
 	ff_flow = ff_cli.run_flow(flow_input = flow_input)
 	action_id = ff_flow['action_id']
 	ff_cli.progress(action_id)
-	print(ff_cli.get_status(action_id))
+	pprint(ff_cli.get_status(action_id))

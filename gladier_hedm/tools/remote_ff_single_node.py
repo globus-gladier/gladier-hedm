@@ -1,6 +1,6 @@
 from gladier import GladierBaseTool, generate_flow_definition
 
-def remote_prepare(**event):  #paramFileName startLayerNr endLayerNr timePath StartFileNrFirstLayer NrFilesPerSweep FileStem SeedFolder StartNr EndNr
+def remote_ff_single_node(**event):  #paramFileName startLayerNr endLayerNr timePath StartFileNrFirstLayer NrFilesPerSweep FileStem SeedFolder StartNr EndNr
 	import numpy as np
 	import os, subprocess
 	import datetime
@@ -18,6 +18,10 @@ def remote_prepare(**event):  #paramFileName startLayerNr endLayerNr timePath St
 	startNr = int(event.get('StartNr'))
 	endNr = int(event.get('EndNr'))
 	darkFN = event.get('darkFN')
+	nFrames = event.get('nFrames')
+	numBlocks = event.get('numBlocks')
+	numProcs = event.get('numProcs')
+	blockNr = 0
 	os.chdir(topdir)
 	paramContents = open(paramFN).readlines()
 	baseNameParamFN = paramFN.split('/')[-1]
@@ -43,13 +47,24 @@ def remote_prepare(**event):  #paramFileName startLayerNr endLayerNr timePath St
 		Path(thisDir+'/Temp').mkdir(parents=True,exist_ok=True)
 		Path(thisDir+'Output').mkdir(parents=True,exist_ok=True)
 		Path(thisDir+'Results').mkdir(parents=True,exist_ok=True)
-		subprocess.call(os.path.expanduser("~/opt/MIDAS/FF_HEDM/bin/GetHKLList")+" "+thisParamFN,shell=True)
+		subprocess.call(os.path.expanduser("~/opt/MIDAS/FF_HEDM/bin/GetHKLList")+" "+baseNameParamFN,shell=True)
+		subprocess.call(os.path.expanduser("~/opt/MIDAS/FF_HEDM/bin/PeaksFittingOMP")+' '+baseNameParamFN+' '+ str(blockNr) + ' ' + str(numBlocks) + ' '+str(nFrames)+' '+str(numProcs),shell=True)
+		subprocess.call(os.path.expanduser("~/opt/MIDAS/FF_HEDM/bin/MergeOverlappingPeaksAll")+' '+baseNameParamFN,shell=True)
+		subprocess.call(os.path.expanduser("~/opt/MIDAS/FF_HEDM/bin/CalcRadiusAll")+' '+baseNameParamFN,shell=True)
+		subprocess.call(os.path.expanduser("~/opt/MIDAS/FF_HEDM/bin/FitSetup")+' '+baseNameParamFN,shell=True)
+		subprocess.call(os.path.expanduser("~/opt/MIDAS/FF_HEDM/bin/SaveBinData"),shell=True)
+		nSpotsToIndex = len(open('SpotsToIndex.csv').readlines())
+		subprocess.call(os.path.expanduser("~/opt/MIDAS/FF_HEDM/bin/IndexerOMP")+' paramstest.txt '+str(blockNr)+' '+str(numBlocks)+' '+str(nSpotsToIndex)+' '+str(numProcs),shell=True)
+		subprocess.call(os.path.expanduser("~/opt/MIDAS/FF_HEDM/bin/FitPosOrStrainsOMP")+' paramstest.txt '+str(blockNr)+' '+str(numBlocks)+' '+str(nSpotsToIndex)+' '+str(numProcs),shell=True)
+		subprocess.call(os.path.expanduser('~/opt/MIDAS/FF_HEDM/bin/ProcessGrains') + ' ' + baseNameParamFN,shell=True)
+		os.chdir(topdir)
+	subprocess.call('tar -czf recon_'+time_path+'.tar.gz *_Analysis_Time_'+time_path+'*',shell=True)
 	return 'done'
 
 @generate_flow_definition(modifiers={
-    remote_prepare: {'WaitTime': 7200}
+    remote_ff_single_node: {'WaitTime': 7200}
 })
-class RemotePrepare(GladierBaseTool):
+class RemoteFFSingleNode(GladierBaseTool):
 
     required_input = [
         'paramFileName',
@@ -61,11 +76,13 @@ class RemotePrepare(GladierBaseTool):
         'FileStem',
         'SeedFolder',
         'darkFN',
+        'nFrames',
         'StartNr',
         'EndNr',
+        'numBlocks',
         'funcx_endpoint_compute',
     ]
 
     funcx_functions = [
-        remote_prepare
+        remote_ff_single_node
     ]

@@ -27,26 +27,67 @@ def SetupPayloads(inp):
 			'extract_recursive':False,
 			'inject_recursive':True,}
 		}
-	flow_input['input'].update({'tasks_multiple':[{
-			'startLayerNr':'$.input.startLayerNr',
-			'endLayerNr':'$.input.endLayerNr',
-			'numProcs':'$.input.numProcs',
-			'nFrames':'$.input.nFrames',
-			'numBlocks':'$.input.numBlocks',
-			'blockNr':f'{idx}',
-			'timePath':'$.input.timePath',
-			'FileStem':'$.input.FileStem',
-			'SeedFolder':'$.input.SeedFolder',
-			'paramFileName':'$.input.paramFileName',
-			} for idx in range(inp['numBlocks'])]})
-	flow_input['input'].update({'indexrefine_tasks':[{
-			'endpoint.$':'$.input.funcx_endpoint_compute',
-			'function.$':'$.input.remote_indexrefine_funcx_id',
-			'payload.$':f'$.input.tasks_multiple[{idx}]'
-		} for idx in range(inp['numBlocks'])]})
-	flow_input['input'].update({'peaksearch_tasks':[{
-			'endpoint.$':'$.input.funcx_endpoint_compute',
-			'function.$':'$.input.remote_peaksearch_funcx_id',
-			'payload.$':f'$.input.tasks_multiple[{idx}]'
-		} for idx in range(inp['numBlocks'])]})
+	flow_input['input'].update({'multipletasks':[{
+				'startLayerNr':inp['startLayerNr'],
+				'endLayerNr':inp['endLayerNr'],
+				'numProcs':inp['numProcs'],
+				'nFrames':inp['nFrames'],
+				'numBlocks':inp['numBlocks'],
+				'blockNr':idx,
+				'timePath':inp['timePath'],
+				'FileStem':inp['fileStem'],
+				'SeedFolder':inp['seedFolder'],
+				'paramFileName':inp['pfName'],
+				} for idx in range(inp['numBlocks'])]})
 	return flow_input
+
+
+
+
+	# ~ flow_input['input'].update({'tasks_multiple':[{
+			# ~ 'startLayerNr':'$.input.startLayerNr',
+			# ~ 'endLayerNr':'$.input.endLayerNr',
+			# ~ 'numProcs':'$.input.numProcs',
+			# ~ 'nFrames':'$.input.nFrames',
+			# ~ 'numBlocks':'$.input.numBlocks',
+			# ~ 'blockNr':f'{idx}',
+			# ~ 'timePath':'$.input.timePath',
+			# ~ 'FileStem':'$.input.FileStem',
+			# ~ 'SeedFolder':'$.input.SeedFolder',
+			# ~ 'paramFileName':'$.input.paramFileName',
+			# ~ } for idx in range(inp['numBlocks'])]})
+	# ~ flow_input['input'].update({'peaksearch_tasks':[{
+			# ~ 'endpoint.$':'$.input.funcx_endpoint_compute',
+			# ~ 'function.$':'$.input.remote_peaksearch_funcx_id',
+			# ~ 'payload':f'$.input.tasks_multiple[{idx}]',
+			# ~ } for idx in range(inp['numBlocks'])]})
+	# ~ flow_input['input'].update({'peaksearch_tasks':[{
+			# ~ 'endpoint.$':'$.input.funcx_endpoint_compute',
+			# ~ 'function.$':'$.input.remote_peaksearch_funcx_id',
+			# ~ 'payload':{
+			# ~ 'startLayerNr.$':'$.input.startLayerNr',
+			# ~ 'endLayerNr.$':'$.input.endLayerNr',
+			# ~ 'numProcs.$':'$.input.numProcs',
+			# ~ 'nFrames.$':'$.input.nFrames',
+			# ~ 'numBlocks.$':'$.input.numBlocks',
+			# ~ 'blockNr.$':f'{idx}',
+			# ~ 'timePath.$':'$.input.timePath',
+			# ~ 'FileStem.$':'$.input.FileStem',
+			# ~ 'SeedFolder.$':'$.input.SeedFolder',
+			# ~ 'paramFileName.$':'$.input.paramFileName',
+			# ~ }} for idx in range(inp['numBlocks'])]})
+	# ~ flow_input['input'].update({'indexrefine_tasks':[{
+			# ~ 'endpoint.$':'$.input.funcx_endpoint_compute',
+			# ~ 'function.$':'$.input.remote_indexrefine_funcx_id',
+			# ~ 'payload.$':{
+			# ~ 'startLayerNr.$':'$.input.startLayerNr',
+			# ~ 'endLayerNr.$':'$.input.endLayerNr',
+			# ~ 'numProcs.$':'$.input.numProcs',
+			# ~ 'nFrames.$':'$.input.nFrames',
+			# ~ 'numBlocks.$':'$.input.numBlocks',
+			# ~ 'blockNr.$':f'{idx}',
+			# ~ 'timePath.$':'$.input.timePath',
+			# ~ 'FileStem.$':'$.input.FileStem',
+			# ~ 'SeedFolder.$':'$.input.SeedFolder',
+			# ~ 'paramFileName.$':'$.input.paramFileName',
+			# ~ }} for idx in range(inp['numBlocks'])]})

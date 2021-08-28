@@ -10,6 +10,25 @@ class BaseDeployment:
         fi['input'].update(self.globus_endpoints)
         return fi
 
+class OrthrosClutchDeployment(BaseDeployment):
+
+    globus_endpoints = {
+        'globus_endpoint_source': 'b0e921df-6d04-11e5-ba46-22000b92c6ec',
+        'globus_endpoint_proc': 'b0e921df-6d04-11e5-ba46-22000b92c6ec',
+        'globus_endpoint_result': 'b0e921df-6d04-11e5-ba46-22000b92c6ec',
+    }
+
+    funcx_endpoints = {
+        'funcx_endpoint_compute': '29570327-867e-431c-acac-35e89296845e',
+    }
+
+    flow_input = {
+        'input': {
+            'remote_dir': '/data/tomo1/funcx_jobs/',
+            'source_dir': '/data/tomo1/',
+        }
+    }
+
 class ThetaClutchDeployment(BaseDeployment):
 
     globus_endpoints = {
@@ -20,6 +39,25 @@ class ThetaClutchDeployment(BaseDeployment):
 
     funcx_endpoints = {
         'funcx_endpoint_compute': '29570327-867e-431c-acac-35e89296845e',
+    }
+
+    flow_input = {
+        'input': {
+            'remote_dir': '/lus/theta-fs0/projects/APSPolarisI2E/HEDM/',
+            'source_dir': '/data/tomo1/',
+        }
+    }
+
+class CooleyThetaClutchDeployment(BaseDeployment):
+
+    globus_endpoints = {
+        'globus_endpoint_source': 'b0e921df-6d04-11e5-ba46-22000b92c6ec',
+        'globus_endpoint_proc': '08925f04-569f-11e7-bef8-22000b9a448b',
+        'globus_endpoint_result': 'b0e921df-6d04-11e5-ba46-22000b92c6ec',
+    }
+
+    funcx_endpoints = {
+        'funcx_endpoint_compute': '60565a3a-a7df-4ae2-b98b-4f91bec4b288',
     }
 
     flow_input = {
@@ -50,6 +88,7 @@ class ThetaVoyagerDeployment(BaseDeployment):
 
 
 deployment_map = {
+    'cooley-theta-clutch': CooleyThetaClutchDeployment(),
     'theta-clutch': ThetaClutchDeployment(),
     'theta-voyager': ThetaVoyagerDeployment(),
 }

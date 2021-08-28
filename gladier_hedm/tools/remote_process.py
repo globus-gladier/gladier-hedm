@@ -16,6 +16,8 @@ def remote_find_grains(**event): # startLayerNr endLayerNr timePath FileStem See
 		subprocess.call(os.path.expanduser('~/opt/MIDAS/FF_HEDM/bin/ProcessGrains') + ' ' + baseNameParamFN,shell=True)
 		os.chdir(topdir)
 	subprocess.call('tar -czf recon_'+time_path+'.tar.gz *_Analysis_Time_'+time_path+'*',shell=True)
+	subprocess.call('rm -rf *_Analysis_Time_'+time_path+'*',shell=True)
+	return 'done'
 
 
 

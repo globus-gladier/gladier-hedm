@@ -17,6 +17,7 @@ def remote_transforms(**event): # startLayerNr endLayerNr timePath FileStem Seed
 		subprocess.call(os.path.expanduser("~/opt/MIDAS/FF_HEDM/bin/CalcRadiusAll")+' '+baseNameParamFN,shell=True)
 		subprocess.call(os.path.expanduser("~/opt/MIDAS/FF_HEDM/bin/FitSetup")+' '+baseNameParamFN,shell=True)
 		subprocess.call(os.path.expanduser("~/opt/MIDAS/FF_HEDM/bin/SaveBinData"),shell=True)
+	return 'done'
 
 @generate_flow_definition(modifiers={
     remote_transforms: {'WaitTime': 7200}
