@@ -38,13 +38,5 @@ class RemoteIndexrefine(GladierBaseTool):
     ]
     required_input = [
 		'multipletasks',
-		# ~ 'startLayerNr',
-		# ~ 'endLayerNr',
-		# ~ 'numProcs',
-		# ~ 'numBlocks',
-		# ~ 'timePath',
-		# ~ 'FileStem',
-		# ~ 'SeedFolder',
-		# ~ 'remote_indexrefine_funcx_id',
 		'funcx_endpoint_compute',
     ]

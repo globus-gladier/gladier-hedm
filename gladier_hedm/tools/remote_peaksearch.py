@@ -40,16 +40,6 @@ class RemotePeaksearch(GladierBaseTool):
     ]
     required_input = [
 		'multipletasks',
-		# ~ 'startLayerNr',
-		# ~ 'endLayerNr',
-		# ~ 'nFrames',
-		# ~ 'numProcs',
-		# ~ 'numBlocks',
-		# ~ 'timePath',
-		# ~ 'FileStem',
-		# ~ 'SeedFolder',
-		# ~ 'paramFileName',
-        # ~ 'remote_peaksearch_funcx_id',
         'funcx_endpoint_compute',
     ]
 
