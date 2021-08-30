@@ -28,7 +28,6 @@ def remote_indexrefine(**event): # startLayerNr endLayerNr numProcs numBlocks bl
 
 @generate_flow_definition(modifiers={
     remote_indexrefine: {'WaitTime': 7200,
-		# ~ }
 		'tasks':'$.RemoteIndexrefineArgsBuilder.details.result[0]',}
 })
 class RemoteIndexrefine(GladierBaseTool):

@@ -9,18 +9,17 @@ def remote_find_grains(**event): # startLayerNr endLayerNr timePath FileStem See
 	topdir = event.get('SeedFolder')
 	paramFN = event.get('paramFileName')
 	baseNameParamFN = paramFN.split('/')[-1]
+	grainsOut = []
 	for layerNr in range(startLayerNr,endLayerNr+1):
 		folderName = fStem + '_Layer_' + str(layerNr).zfill(4) + '_Analysis_Time_' + time_path
 		thisDir = topdir + '/' + folderName + '/'
 		os.chdir(thisDir)
 		subprocess.call(os.path.expanduser('~/opt/MIDAS/FF_HEDM/bin/ProcessGrains') + ' ' + baseNameParamFN,shell=True)
+		grainsOut.append(open('Grains.csv','r').readline())
 		os.chdir(topdir)
 	subprocess.call('tar -czf recon_'+time_path+'.tar.gz *_Analysis_Time_'+time_path+'*',shell=True)
 	subprocess.call('rm -rf *_Analysis_Time_'+time_path+'*',shell=True)
-	return 'done'
-
-
-
+	return grainsOut
 
 @generate_flow_definition(modifiers={
     remote_find_grains: {'WaitTime': 7200},

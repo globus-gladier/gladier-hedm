@@ -27,6 +27,7 @@ def remote_ff_single_node(**event):  #paramFileName startLayerNr endLayerNr time
 	baseNameParamFN = paramFN.split('/')[-1]
 	homedir = os.path.expanduser('~')
 	nFrames = endNr - startNr + 1
+	grainsOut = []
 	for layerNr in range(startLayerNr,endLayerNr+1):
 		thisStartNr = startNrFirstLayer + (layerNr-1)*nrFilesPerSweep
 		folderName = fStem + '_Layer_' + str(layerNr).zfill(4) + '_Analysis_Time_' + time_path
@@ -57,9 +58,11 @@ def remote_ff_single_node(**event):  #paramFileName startLayerNr endLayerNr time
 		subprocess.call(os.path.expanduser("~/opt/MIDAS/FF_HEDM/bin/IndexerOMP")+' paramstest.txt '+str(blockNr)+' '+str(numBlocks)+' '+str(nSpotsToIndex)+' '+str(numProcs),shell=True)
 		subprocess.call(os.path.expanduser("~/opt/MIDAS/FF_HEDM/bin/FitPosOrStrainsOMP")+' paramstest.txt '+str(blockNr)+' '+str(numBlocks)+' '+str(nSpotsToIndex)+' '+str(numProcs),shell=True)
 		subprocess.call(os.path.expanduser('~/opt/MIDAS/FF_HEDM/bin/ProcessGrains') + ' ' + baseNameParamFN,shell=True)
+		grainsOut.append(open('Grains.csv','r').readline())
 		os.chdir(topdir)
 	subprocess.call('tar -czf recon_'+time_path+'.tar.gz *_Analysis_Time_'+time_path+'*',shell=True)
-	return 'done'
+	subprocess.call('rm -rf *_Analysis_Time_'+time_path+'*',shell=True)
+	return grainsOut
 
 @generate_flow_definition(modifiers={
     remote_ff_single_node: {'WaitTime': 7200}

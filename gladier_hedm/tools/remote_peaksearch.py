@@ -30,7 +30,6 @@ def remote_peaksearch(**event): # startLayerNr endLayerNr nFrames numProcs numBl
 
 @generate_flow_definition(modifiers={
     remote_peaksearch: {'WaitTime': 7200,
-		# ~ }
 		'tasks':'$.RemotePeaksearchArgsBuilder.details.result[0]'}
 })
 class RemotePeaksearch(GladierBaseTool):
