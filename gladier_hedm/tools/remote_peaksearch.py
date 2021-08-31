@@ -24,7 +24,6 @@ def remote_peaksearch(**event): # startLayerNr endLayerNr nFrames numProcs numBl
 		folderName = fStem + '_Layer_' + str(layerNr).zfill(4) + '_Analysis_Time_' + time_path
 		thisDir = topdir + '/' + folderName + '/'
 		os.chdir(thisDir)
-		shutil.copy2('hkls.csv','hkls_ps.csv')
 		subprocess.call(os.path.expanduser("~/opt/MIDAS/FF_HEDM/bin/PeaksFittingOMP")+' '+baseNameParamFN+' '+ str(blockNr) + ' ' + str(numBlocks) + ' '+str(nFrames)+' '+str(numProcs),shell=True)
 	return 'done'
 

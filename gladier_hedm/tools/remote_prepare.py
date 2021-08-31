@@ -28,6 +28,7 @@ def remote_prepare(**event):  #paramFileName startLayerNr endLayerNr timePath St
 		folderName = fStem + '_Layer_' + str(layerNr).zfill(4) + '_Analysis_Time_' + time_path
 		thisDir = topdir + '/' + folderName + '/'
 		Path(thisDir).mkdir(parents=True,exist_ok=True)
+		Path(thisDir+'/remote_data').mkdir(parents=True,exist_ok=True)
 		os.chdir(thisDir)
 		thisParamFN = thisDir + baseNameParamFN
 		thisPF = open(thisParamFN,'w')
@@ -41,8 +42,8 @@ def remote_prepare(**event):  #paramFileName startLayerNr endLayerNr timePath St
 		thisPF.write('StartFileNr '+str(thisStartNr)+'\n')
 		thisPF.close()
 		Path(thisDir+'/Temp').mkdir(parents=True,exist_ok=True)
-		Path(thisDir+'Output').mkdir(parents=True,exist_ok=True)
-		Path(thisDir+'Results').mkdir(parents=True,exist_ok=True)
+		Path(thisDir+'/Output').mkdir(parents=True,exist_ok=True)
+		Path(thisDir+'/Results').mkdir(parents=True,exist_ok=True)
 		subprocess.call(os.path.expanduser("~/opt/MIDAS/FF_HEDM/bin/GetHKLList")+" "+thisParamFN,shell=True)
 	return 'done'
 

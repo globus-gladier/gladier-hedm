@@ -28,9 +28,12 @@ if __name__ == '__main__':
 	args = arg_parse()
 
 	paramFN = args.paramFile
+	if args.startLayerNr != args.endLayerNr:
+		print("Works for a single layer only for now. Please submit individual jobs for each layer")
 	thisT = datetime.datetime.now()
 	tod = datetime.date.today()
-	timePath = str(tod.year) + '_' + str(tod.month).zfill(2) + '_' + str(tod.day).zfill(2) + '_' + str(thisT.hour).zfill(2) + '_' + str(thisT.minute).zfill(2) + '_' + str(thisT.second).zfill(2)
+	# ~ timePath = str(tod.year) + '_' + str(tod.month).zfill(2) + '_' + str(tod.day).zfill(2) + '_' + str(thisT.hour).zfill(2) + '_' + str(thisT.minute).zfill(2) + '_' + str(thisT.second).zfill(2)
+	timePath = '2021_08_29_12_54_01'
 	paramContents = open(paramFN).readlines()
 	for line in paramContents:
 		if line.startswith('StartFileNrFirstLayer'):
@@ -59,9 +62,11 @@ if __name__ == '__main__':
 	resultPath = sourcePath + 'recon_'+timePath+'.tar.gz'
 	seedFolder = executePath
 
-	## Set up payloads
+	## Set up input
 	inp = {}
 	inp.update({'sourceEP':depl_input['input']['globus_endpoint_source']})
+	inp.update({'sourceNCEP':depl_input['input']['globus_endpoint_source_noncompute']})
+	inp.update({'portal_id':depl_input['input']['portal_id']})
 	inp.update({'sourcePath':sourcePath})
 	inp.update({'remoteDataEP':depl_input['input']['globus_endpoint_proc']})
 	inp.update({'funcx_endpoint_compute':depl_input['input']['funcx_endpoint_compute']})
@@ -83,13 +88,13 @@ if __name__ == '__main__':
 	inp.update({'darkFN':darkFN})
 	inp.update({'startNr':startNr})
 	inp.update({'endNr':endNr})
+	inp.update({'experimentName':args.experimentName})
 	
 	flow_input = SetupPayloads(inp)
 	pprint(flow_input)
 	
 	ff_cli = FFFlow()
 	pprint(ff_cli.flow_definition)
-	ff_flow_label = f'{args.experimentName}_{fileStem}_{args.startLayerNr}_{args.endLayerNr}_{startNrFirstLayer}'
 	
 	ff_flow = ff_cli.run_flow(flow_input = flow_input)
 	action_id = ff_flow['action_id']

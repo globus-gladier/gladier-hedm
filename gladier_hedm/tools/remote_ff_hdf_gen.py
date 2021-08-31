@@ -1,13 +1,12 @@
 from gladier import GladierBaseTool, generate_flow_definition
 
-def remote_find_grains(**event): # startLayerNr endLayerNr timePath FileStem SeedFolder paramFileName
+def remote_ff_hdf_gen(**event):
 	import os
 	import sys
 	import numpy as np
 	import h5py
 	import warnings
 	import matplotlib.pyplot as plt
-	import subprocess
 
 	warnings.filterwarnings('ignore')
 	def getValueFromParamFile(paramfn,searchStr,nLines=1,wordNr=1,nWords=1):
@@ -30,21 +29,18 @@ def remote_find_grains(**event): # startLayerNr endLayerNr timePath FileStem See
 	time_path = event.get('timePath')
 	fStem = event.get('FileStem')
 	topdir = event.get('SeedFolder')
-	paramFN = event.get('paramFileName')
-	paramFile = baseNameParamFN
-	baseNameParamFN = paramFN.split('/')[-1]
+	paramFile = event.get('paramFileName')
+	headSpots = 'GrainID SpotID Omega DetectorHor DetectorVert OmeRaw Eta RingNr YLab ZLab Theta StrainError OriginalRadiusFileSpotID IntegratedIntensity Omega(degrees) YCen(px) ZCen(px) IMax MinOme(degrees) MaxOme(degress) Radius(px) Theta(degrees) Eta(degrees) DeltaOmega NImgs RingNr GrainVolume GrainRadius PowderIntensity SigmaR SigmaEta NrPx'
 	resArr = []
-	for layerNr in range(startLayerNr,endLayerNr+1):
-		folderName = fStem + '_Layer_' + str(layerNr).zfill(4) + '_Analysis_Time_' + time_path
+
+	for layerNr  in range(startLayerNr,endLayerNr+1):
+		thisDir = folderName = fStem + '_Layer_' + str(layerNr).zfill(4) + '_Analysis_Time_' + time_path
 		thisDir = topdir + '/' + folderName + '/'
 		os.chdir(thisDir)
-		subprocess.call(os.path.expanduser('~/opt/MIDAS/FF_HEDM/bin/ProcessGrains') + ' ' + baseNameParamFN,shell=True)
-		grainsOut.append(open('Grains.csv','r').readline())
-
-		# HDF and Figs
 		outFN = f'{thisDir}/remote_data/result_{fStem}_LayerNr_{layerNr}_Analysis_time_{time_path}.hdf'
+		startNr = int(getValueFromParamFile(paramFile,'StartNr')[0][0])
+		endNr = int(getValueFromParamFile(paramFile,'EndNr')[0][0])
 		pad = int(getValueFromParamFile(paramFile,'Padding')[0][0])
-
 		Grains = np.genfromtxt('Grains.csv',skip_header=9)
 		SpotMatrix = np.genfromtxt('SpotMatrix.csv',skip_header=1)
 		IDRings = np.genfromtxt('IDRings.csv',skip_header=1)
@@ -134,7 +130,6 @@ def remote_find_grains(**event): # startLayerNr endLayerNr timePath FileStem See
 			spd = grg.create_dataset('SpotMatrix_Radius',data=RadiusInfo)
 			spd.attrs['header'] = headSpots
 		outFile.close()
-
 		# Make and save plots
 		plt.scatter(Grains[:,10],Grains[:,11]);  plt.xlabel('X [\mu m]'); plt.ylabel('Y [\mu m]'); plt.savefig('remote_data/XY.png'); plt.clf()
 		plt.scatter(Grains[:,11],Grains[:,12]);  plt.xlabel('Y [\mu m]'); plt.ylabel('Z [\mu m]'); plt.savefig('remote_data/YZ.png'); plt.clf()
@@ -145,17 +140,14 @@ def remote_find_grains(**event): # startLayerNr endLayerNr timePath FileStem See
 		plt.scatter(Grains[:,37],Grains[:,22]);  plt.xlabel('Grain Radius [\mu m]'); plt.ylabel('E_YY'); plt.savefig('remote_data/eYYvsRad.png'); plt.clf()
 		plt.scatter(Grains[:,41],Grains[:,22]);  plt.xlabel('Grain Radius [\mu m]'); plt.ylabel('E_ZZ'); plt.savefig('remote_data/eZZvsRad.png'); plt.clf()
 		os.chdir(topdir)
-		resArr.append([outFN,open('Grains.csv','r').readline()])
-		os.chdir(topdir)
-
-	subprocess.call('tar -czf recon_'+time_path+'.tar.gz *_Analysis_Time_'+time_path+'*',shell=True)
-	return resArr
+		resArr.append(outFN)
+	return(resArr)
 
 @generate_flow_definition(modifiers={
-    remote_find_grains: {'WaitTime': 7200},
+    remote_ff_hdf_gen: {'WaitTime': 7200},
     
 })
-class RemoteFindGrains(GladierBaseTool):
+class RemoteGenerateHDF(GladierBaseTool):
 
     required_input = [
         'paramFileName',
@@ -168,5 +160,5 @@ class RemoteFindGrains(GladierBaseTool):
     ]
 
     funcx_functions = [
-        remote_find_grains
+        remote_ff_hdf_gen
     ]
