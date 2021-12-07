@@ -28,7 +28,6 @@ def remote_prepare(**event):  #paramFileName startLayerNr endLayerNr timePath St
 		folderName = fStem + '_Layer_' + str(layerNr).zfill(4) + '_Analysis_Time_' + time_path
 		thisDir = topdir + '/' + folderName + '/'
 		Path(thisDir).mkdir(parents=True,exist_ok=True)
-		Path(thisDir+'/remote_data').mkdir(parents=True,exist_ok=True)
 		os.chdir(thisDir)
 		thisParamFN = thisDir + baseNameParamFN
 		thisPF = open(thisParamFN,'w')

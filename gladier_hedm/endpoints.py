@@ -17,6 +17,7 @@ class OrthrosClutchDeployment(BaseDeployment):
         'globus_endpoint_source': 'b0e921df-6d04-11e5-ba46-22000b92c6ec',
         'globus_endpoint_source_noncompute': '08f6e19f-52d0-4eae-b190-df412518e63a',
         'globus_endpoint_proc': 'b0e921df-6d04-11e5-ba46-22000b92c6ec',
+        'globus_endpoint_proc_noncompute': 'b0e921df-6d04-11e5-ba46-22000b92c6ec',
         'globus_endpoint_result': 'b0e921df-6d04-11e5-ba46-22000b92c6ec',
     }
 
@@ -41,11 +42,37 @@ class ThetaClutchDeployment(BaseDeployment):
         'globus_endpoint_source': 'b0e921df-6d04-11e5-ba46-22000b92c6ec',
         'globus_endpoint_source_noncompute': '08f6e19f-52d0-4eae-b190-df412518e63a',
         'globus_endpoint_proc': '08925f04-569f-11e7-bef8-22000b9a448b',
+        'globus_endpoint_proc_noncompute': 'e47744d4-a018-4adc-b184-a7d20e4b4738',
         'globus_endpoint_result': 'b0e921df-6d04-11e5-ba46-22000b92c6ec',
     }
 
     funcx_endpoints = {
         'funcx_endpoint_compute': '29570327-867e-431c-acac-35e89296845e',
+    }
+
+    portal_ids = {
+        'portal_id': '9302766a-aefc-47e9-81d1-34a06f3508f3',
+    }
+
+    flow_input = {
+        'input': {
+            'remote_dir': '/lus/theta-fs0/projects/APSPolarisI2E/HEDM/',
+            'source_dir': '/data/tomo1/',
+        }
+    }
+
+class EDTB02ClutchDeployment(BaseDeployment):
+
+    globus_endpoints = {
+        'globus_endpoint_source': 'b0e921df-6d04-11e5-ba46-22000b92c6ec',
+        'globus_endpoint_source_noncompute': '08f6e19f-52d0-4eae-b190-df412518e63a',
+        'globus_endpoint_proc': '08925f04-569f-11e7-bef8-22000b9a448b',
+        'globus_endpoint_proc_noncompute': 'e47744d4-a018-4adc-b184-a7d20e4b4738',
+        'globus_endpoint_result': 'b0e921df-6d04-11e5-ba46-22000b92c6ec',
+    }
+
+    funcx_endpoints = {
+        'funcx_endpoint_compute': 'f1e4a429-10b1-4219-97c3-d8b6d1450b86',
     }
 
     portal_ids = {
@@ -65,6 +92,7 @@ class CooleyThetaClutchDeployment(BaseDeployment):
         'globus_endpoint_source': 'b0e921df-6d04-11e5-ba46-22000b92c6ec',
         'globus_endpoint_source_noncompute': '08f6e19f-52d0-4eae-b190-df412518e63a',
         'globus_endpoint_proc': '08925f04-569f-11e7-bef8-22000b9a448b',
+        'globus_endpoint_proc_noncompute': '08925f04-569f-11e7-bef8-22000b9a448b',
         'globus_endpoint_result': 'b0e921df-6d04-11e5-ba46-22000b92c6ec',
     }
 
@@ -89,6 +117,7 @@ class ThetaVoyagerDeployment(BaseDeployment):
         'globus_endpoint_source': '9c9cb97e-de86-11e6-9d15-22000a1e3b52',
         'globus_endpoint_source_noncompute': '08f6e19f-52d0-4eae-b190-df412518e63a',
         'globus_endpoint_proc': '08925f04-569f-11e7-bef8-22000b9a448b',
+        'globus_endpoint_proc_noncompute': 'e47744d4-a018-4adc-b184-a7d20e4b4738',
         'globus_endpoint_result': 'b0e921df-6d04-11e5-ba46-22000b92c6ec',
     }
 
@@ -112,4 +141,5 @@ deployment_map = {
     'cooley-theta-clutch': CooleyThetaClutchDeployment(),
     'theta-clutch': ThetaClutchDeployment(),
     'theta-voyager': ThetaVoyagerDeployment(),
+    'edtb-clutch':EDTB02ClutchDeployment(),
 }

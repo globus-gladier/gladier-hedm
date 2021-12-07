@@ -8,6 +8,7 @@ def remote_ff_single_node(**event):  #paramFileName startLayerNr endLayerNr time
 	import shutil
 	import h5py
 	import warnings
+	import matplotlib.pyplot as plt
 
 	warnings.filterwarnings('ignore')
 
@@ -38,8 +39,8 @@ def remote_ff_single_node(**event):  #paramFileName startLayerNr endLayerNr time
 	endNr = int(event.get('EndNr'))
 	darkFN = event.get('darkFN')
 	nFrames = event.get('nFrames')
-	numBlocks = event.get('numBlocks')
 	numProcs = event.get('numProcs')
+	numBlocks = 1
 	blockNr = 0
 	os.chdir(topdir)
 	paramContents = open(paramFN).readlines()
@@ -47,12 +48,14 @@ def remote_ff_single_node(**event):  #paramFileName startLayerNr endLayerNr time
 	homedir = os.path.expanduser('~')
 	nFrames = endNr - startNr + 1
 	resArr = []
+	headSpots = 'GrainID SpotID Omega DetectorHor DetectorVert OmeRaw Eta RingNr YLab ZLab Theta StrainError OriginalRadiusFileSpotID IntegratedIntensity Omega(degrees) YCen(px) ZCen(px) IMax MinOme(degrees) MaxOme(degress) Radius(px) Theta(degrees) Eta(degrees) DeltaOmega NImgs RingNr GrainVolume GrainRadius PowderIntensity SigmaR SigmaEta NrPx'
 	for layerNr in range(startLayerNr,endLayerNr+1):
 		thisStartNr = startNrFirstLayer + (layerNr-1)*nrFilesPerSweep
 		folderName = fStem + '_Layer_' + str(layerNr).zfill(4) + '_Analysis_Time_' + time_path
 		thisDir = topdir + '/' + folderName + '/'
 		Path(thisDir).mkdir(parents=True,exist_ok=True)
-		Path(thisDir+'/remote_data').mkdir(parents=True,exist_ok=True)
+		outdir = f'{thisDir}/{fStem}_Layer_{str(layerNr).zfill(4)}_Analysis_Time_{time_path}/'
+		Path(outdir).mkdir(parents=True,exist_ok=True)
 		os.chdir(thisDir)
 		thisParamFN = thisDir + baseNameParamFN
 		thisPF = open(thisParamFN,'w')
@@ -80,7 +83,7 @@ def remote_ff_single_node(**event):  #paramFileName startLayerNr endLayerNr time
 		subprocess.call(os.path.expanduser('~/opt/MIDAS/FF_HEDM/bin/ProcessGrains') + ' ' + baseNameParamFN,shell=True)
 
 		paramFile = baseNameParamFN
-		outFN = f'{thisDir}/remote_data/result_{fStem}_LayerNr_{layerNr}_Analysis_time_{time_path}.hdf'
+		outFN = f'{outdir}/result_{fStem}_LayerNr_{layerNr}_Analysis_time_{time_path}.hdf'
 		pad = int(getValueFromParamFile(paramFile,'Padding')[0][0])
 
 		Grains = np.genfromtxt('Grains.csv',skip_header=9)
@@ -135,7 +138,7 @@ def remote_ff_single_node(**event):  #paramFileName startLayerNr endLayerNr time
 			if os.path.exists(fileName):
 				arr = np.genfromtxt(fileName,skip_header=1)
 				if arr.shape[0] > 0:
-					tmpd = group3.create_dataset(os.path.basename(fileName),data=arr)
+					tmpd = group2.create_dataset(os.path.basename(fileName),data=arr)
 					tmpd.attrs['head'] = np.string_(open(fileName).readline())
 		# Put Radii
 		fileName = f'{os.getcwd()}/Radius_StartNr_{startNr}_EndNr_{endNr}.csv'
@@ -151,9 +154,7 @@ def remote_ff_single_node(**event):  #paramFileName startLayerNr endLayerNr time
 		resd = group1.create_dataset(os.path.basename(fileName),data=arr)
 		resd.attrs['head'] = np.string_(open(fileName).readline())
 		resarr = arr
-		
 		gg = outFile.create_group('Grains')
-		
 		for counter,grain in enumerate(Grains):
 			thisID = int(grain[0])
 			print(f'Processing grain {counter+1} out of {Grains.shape[0]} grains.')
@@ -174,16 +175,16 @@ def remote_ff_single_node(**event):  #paramFileName startLayerNr endLayerNr time
 		outFile.close()
 
 		# Make and save plots
-		plt.scatter(Grains[:,10],Grains[:,11]);  plt.xlabel('X [\mu m]'); plt.ylabel('Y [\mu m]'); plt.savefig('remote_data/XY.png'); plt.clf()
-		plt.scatter(Grains[:,11],Grains[:,12]);  plt.xlabel('Y [\mu m]'); plt.ylabel('Z [\mu m]'); plt.savefig('remote_data/YZ.png'); plt.clf()
-		plt.scatter(Grains[:,10],Grains[:,12]);  plt.xlabel('X [\mu m]'); plt.ylabel('Z [\mu m]'); plt.savefig('remote_data/XZ.png'); plt.clf()
-		plt.scatter(Grains[:,19],Grains[:,22]);  plt.xlabel('Grain Radius [\mu m]'); plt.ylabel('PosErr [\mu m]'); plt.savefig('remote_data/PosvsRad.png'); plt.clf()
-		plt.scatter(Grains[:,21],Grains[:,22]);  plt.xlabel('Grain Radius [\mu m]'); plt.ylabel('InternalAngle [Degrees]'); plt.savefig('remote_data/IAvsRad.png'); plt.clf()
-		plt.scatter(Grains[:,33],Grains[:,22]);  plt.xlabel('Grain Radius [\mu m]'); plt.ylabel('E_XX'); plt.savefig('remote_data/eXXvsRad.png'); plt.clf()
-		plt.scatter(Grains[:,37],Grains[:,22]);  plt.xlabel('Grain Radius [\mu m]'); plt.ylabel('E_YY'); plt.savefig('remote_data/eYYvsRad.png'); plt.clf()
-		plt.scatter(Grains[:,41],Grains[:,22]);  plt.xlabel('Grain Radius [\mu m]'); plt.ylabel('E_ZZ'); plt.savefig('remote_data/eZZvsRad.png'); plt.clf()
-		os.chdir(topdir)
+		plt.scatter(Grains[:,10],Grains[:,11]);  plt.xlabel('X [\mu m]'); plt.ylabel('Y [\mu m]'); plt.savefig(outdir+'/XY.png'); plt.clf()
+		plt.scatter(Grains[:,11],Grains[:,12]);  plt.xlabel('Y [\mu m]'); plt.ylabel('Z [\mu m]'); plt.savefig(outdir+'/YZ.png'); plt.clf()
+		plt.scatter(Grains[:,10],Grains[:,12]);  plt.xlabel('X [\mu m]'); plt.ylabel('Z [\mu m]'); plt.savefig(outdir+'/XZ.png'); plt.clf()
+		plt.scatter(Grains[:,22],Grains[:,19]);  plt.xlabel('Grain Radius [\mu m]'); plt.ylabel('PosErr [\mu m]'); plt.savefig(outdir+'/PosvsRad.png'); plt.clf()
+		plt.scatter(Grains[:,22],Grains[:,21]);  plt.xlabel('Grain Radius [\mu m]'); plt.ylabel('InternalAngle [Degrees]'); plt.savefig(outdir+'/IAvsRad.png'); plt.clf()
+		plt.scatter(Grains[:,22],Grains[:,33]);  plt.xlabel('Grain Radius [\mu m]'); plt.ylabel('E_XX'); plt.savefig(outdir+'/eXXvsRad.png'); plt.clf()
+		plt.scatter(Grains[:,22],Grains[:,37]);  plt.xlabel('Grain Radius [\mu m]'); plt.ylabel('E_YY'); plt.savefig(outdir+'/eYYvsRad.png'); plt.clf()
+		plt.scatter(Grains[:,22],Grains[:,41]);  plt.xlabel('Grain Radius [\mu m]'); plt.ylabel('E_ZZ'); plt.savefig(outdir+'/eZZvsRad.png'); plt.clf()
 		resArr.append([outFN,open('Grains.csv','r').readline()])
+		os.chdir(topdir)
 
 	subprocess.call('tar -czf recon_'+time_path+'.tar.gz *_Analysis_Time_'+time_path+'*',shell=True)
 	return resArr

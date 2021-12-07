@@ -11,7 +11,6 @@ def gen_metadata(fn):
 			continue
 		else:
 			# Special case RingThresh
-			# ~ print(len(line))
 			firstWord = line.split()[0]
 			if line.startswith('RingThresh'):
 				if 'RingThresh' not in metadata.keys():
@@ -28,6 +27,7 @@ def SetupPayloads(inp):
 		"input": {
 			"inject_source_endpoint_id":		inp['sourceEP'],
 			"funcx_endpoint_non_compute":		inp['sourceNCEP'],
+			"proc_endpoint_non_compute":		inp['procNCEP'],
 			"inject_source_path":				inp['sourcePath'],
 			"inject_destination_endpoint_id":	inp['remoteDataEP'],
 			"extract_source_endpoint_id":		inp['remoteDataEP'],
@@ -71,7 +71,7 @@ def SetupPayloads(inp):
 	})
 	flow_input['input'].update({
 		'pilot':{
-			'dataset':f'{inp["sourcePath"]}/{inp["fileStem"]}_Layer_{str(inp["startLayerNr"]).zfill(4)}_Analysis_Time_{inp["timePath"]}/remote_data/',
+			'dataset':f'{inp["sourcePath"]}/{inp["fileStem"]}_Layer_{str(inp["startLayerNr"]).zfill(4)}_Analysis_Time_{inp["timePath"]}/{inp["fileStem"]}_Layer_{str(inp["startLayerNr"]).zfill(4)}_Analysis_Time_{inp["timePath"]}/',
 			'index':inp['portal_id'],
 			'project':'hedm',
 			'source_globus_endpoint':inp['sourceEP'],
@@ -86,5 +86,9 @@ def SetupPayloads(inp):
 	})
 	flow_input['input']['pilot']['metadata'].update({
 		'time_path':inp["timePath"],
+	})
+	flow_input['input']['pilot']['metadata'].update({
+		'startNr':inp["startNr"],
+		'endNr':inp["endNr"],
 	})
 	return flow_input
