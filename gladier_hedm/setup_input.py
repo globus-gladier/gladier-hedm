@@ -1,4 +1,4 @@
-from gladier_hedm.endpoints import deployment_map
+from gladier_hedm.deployments import deployment_map
 import datetime
 
 def setup_input(args):

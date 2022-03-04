@@ -1,6 +1,6 @@
 from gladier import GladierBaseTool, generate_flow_definition
 
-def remote_find_grains(**event): # startLayerNr endLayerNr timePath FileStem SeedFolder paramFileName
+def remote_find_grains(**data): # startLayerNr endLayerNr timePath FileStem SeedFolder paramFileName
 	import os
 	import sys
 	import numpy as np
@@ -27,14 +27,14 @@ def remote_find_grains(**event): # startLayerNr endLayerNr timePath FileStem See
 		return ret_list
 
 	headSpots = 'GrainID SpotID Omega DetectorHor DetectorVert OmeRaw Eta RingNr YLab ZLab Theta StrainError OriginalRadiusFileSpotID IntegratedIntensity Omega(degrees) YCen(px) ZCen(px) IMax MinOme(degrees) MaxOme(degress) Radius(px) Theta(degrees) Eta(degrees) DeltaOmega NImgs RingNr GrainVolume GrainRadius PowderIntensity SigmaR SigmaEta NrPx'
-	startLayerNr = int(event.get('startLayerNr'))
-	endLayerNr = int(event.get('endLayerNr'))
-	startNr = int(event.get('StartNr'))
-	endNr = int(event.get('EndNr'))
-	time_path = event.get('timePath')
-	fStem = event.get('FileStem')
-	topdir = event.get('SeedFolder')
-	paramFN = event.get('paramFileName')
+	startLayerNr = int(data.get('startLayerNr'))
+	endLayerNr = int(data.get('endLayerNr'))
+	startNr = int(data.get('StartNr'))
+	endNr = int(data.get('EndNr'))
+	time_path = data.get('timePath')
+	fStem = data.get('FileStem')
+	topdir = data.get('SeedFolder')
+	paramFN = data.get('paramFileName')
 	baseNameParamFN = paramFN.split('/')[-1]
 	paramFile = baseNameParamFN
 	resArr = []

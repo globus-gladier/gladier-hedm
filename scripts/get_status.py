@@ -3,10 +3,8 @@
 import argparse
 import time
 import sys
-from pprint import pprint
 
 from gladier.utils.flow_generation import get_ordered_flow_states
-
 
 
 def arg_parse():
@@ -25,8 +23,8 @@ if __name__ == '__main__':
     args = arg_parse()
 
     ##import the client
-    from gladier_hedm.client_xxx import HedmFlow
-    main_cli = HedmFlow()
+    from gladier_hedm.flows import FFFlow
+    main_cli = FFFlow()
 
     flow_dict = get_ordered_flow_states(main_cli.flow_definition)
     flow_steps = []

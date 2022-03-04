@@ -1,13 +1,13 @@
 from gladier import GladierBaseTool, generate_flow_definition
 
-def remote_transforms(**event): # startLayerNr endLayerNr timePath FileStem SeedFolder paramFileName
+def remote_transforms(**data): # startLayerNr endLayerNr timePath FileStem SeedFolder paramFileName
 	import os, subprocess
-	startLayerNr = int(event.get('startLayerNr'))
-	endLayerNr = int(event.get('endLayerNr'))
-	time_path = event.get('timePath')
-	fStem = event.get('FileStem')
-	topdir = event.get('SeedFolder')
-	paramFN = event.get('paramFileName')
+	startLayerNr = int(data.get('startLayerNr'))
+	endLayerNr = int(data.get('endLayerNr'))
+	time_path = data.get('timePath')
+	fStem = data.get('FileStem')
+	topdir = data.get('SeedFolder')
+	paramFN = data.get('paramFileName')
 	baseNameParamFN = paramFN.split('/')[-1]
 	for layerNr in range(startLayerNr,endLayerNr+1):
 		folderName = fStem + '_Layer_' + str(layerNr).zfill(4) + '_Analysis_Time_' + time_path

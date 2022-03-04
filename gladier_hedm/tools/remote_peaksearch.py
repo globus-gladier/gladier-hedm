@@ -7,18 +7,18 @@ def remote_peaksearch_args_builder(**data):
 		'payload': payload,
 	} for payload in data.get('multipletasks',[])]
 
-def remote_peaksearch(**event): # startLayerNr endLayerNr nFrames numProcs numBlocks blockNr timePath FileStem SeedFolder paramFileName
+def remote_peaksearch(**data): # startLayerNr endLayerNr nFrames numProcs numBlocks blockNr timePath FileStem SeedFolder paramFileName
 	import os, subprocess, shutil
-	startLayerNr = int(event.get('startLayerNr'))
-	endLayerNr = int(event.get('endLayerNr'))
-	nFrames = int(event.get('nFrames'))
-	numProcs = int(event.get('numProcs'))
-	numBlocks = int(event.get('numBlocks'))
-	blockNr = int(event.get('blockNr'))
-	time_path = event.get('timePath')
-	fStem = event.get('FileStem')
-	topdir = event.get('SeedFolder')
-	paramFN = event.get('paramFileName')
+	startLayerNr = int(data.get('startLayerNr'))
+	endLayerNr = int(data.get('endLayerNr'))
+	nFrames = int(data.get('nFrames'))
+	numProcs = int(data.get('numProcs'))
+	numBlocks = int(data.get('numBlocks'))
+	blockNr = int(data.get('blockNr'))
+	time_path = data.get('timePath')
+	fStem = data.get('FileStem')
+	topdir = data.get('SeedFolder')
+	paramFN = data.get('paramFileName')
 	baseNameParamFN = paramFN.split('/')[-1]
 	for layerNr in range(startLayerNr,endLayerNr+1):
 		folderName = fStem + '_Layer_' + str(layerNr).zfill(4) + '_Analysis_Time_' + time_path

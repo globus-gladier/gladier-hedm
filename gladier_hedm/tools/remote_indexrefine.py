@@ -7,16 +7,16 @@ def remote_indexrefine_args_builder(**data):
 		'payload': payload,
 	} for payload in data.get('multipletasks',[])]
 
-def remote_indexrefine(**event): # startLayerNr endLayerNr numProcs numBlocks blockNr timePath FileStem SeedFolder
+def remote_indexrefine(**data): # startLayerNr endLayerNr numProcs numBlocks blockNr timePath FileStem SeedFolder
 	import os, subprocess
-	startLayerNr = int(event.get('startLayerNr'))
-	endLayerNr = int(event.get('endLayerNr'))
-	numProcs = int(event.get('numProcs'))
-	numBlocks = int(event.get('numBlocks'))
-	blockNr = int(event.get('blockNr'))
-	time_path = event.get('timePath')
-	fStem = event.get('FileStem')
-	topdir = event.get('SeedFolder')
+	startLayerNr = int(data.get('startLayerNr'))
+	endLayerNr = int(data.get('endLayerNr'))
+	numProcs = int(data.get('numProcs'))
+	numBlocks = int(data.get('numBlocks'))
+	blockNr = int(data.get('blockNr'))
+	time_path = data.get('timePath')
+	fStem = data.get('FileStem')
+	topdir = data.get('SeedFolder')
 	for layerNr in range(startLayerNr,endLayerNr+1):
 		folderName = fStem + '_Layer_' + str(layerNr).zfill(4) + '_Analysis_Time_' + time_path
 		thisDir = topdir + '/' + folderName + '/'
