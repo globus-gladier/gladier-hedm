@@ -1,8 +1,7 @@
 from gladier import GladierBaseTool, generate_flow_definition
 
-def remote_ff_hdf_gen(**event):
+def remote_ff_hdf_gen(**data):
 	import os
-	import sys
 	import numpy as np
 	import h5py
 	import warnings
@@ -24,12 +23,12 @@ def remote_ff_hdf_gen(**event):
 					return ret_list
 		return ret_list
 
-	startLayerNr = int(event.get('startLayerNr'))
-	endLayerNr = int(event.get('endLayerNr'))
-	time_path = event.get('timePath')
-	fStem = event.get('FileStem')
-	topdir = event.get('SeedFolder')
-	paramFile = event.get('paramFileName')
+	startLayerNr = int(data.get('startLayerNr'))
+	endLayerNr = int(data.get('endLayerNr'))
+	time_path = data.get('timePath')
+	fStem = data.get('FileStem')
+	topdir = data.get('SeedFolder')
+	paramFile = data.get('paramFileName')
 	headSpots = 'GrainID SpotID Omega DetectorHor DetectorVert OmeRaw Eta RingNr YLab ZLab Theta StrainError OriginalRadiusFileSpotID IntegratedIntensity Omega(degrees) YCen(px) ZCen(px) IMax MinOme(degrees) MaxOme(degress) Radius(px) Theta(degrees) Eta(degrees) DeltaOmega NImgs RingNr GrainVolume GrainRadius PowderIntensity SigmaR SigmaEta NrPx'
 	resArr = []
 

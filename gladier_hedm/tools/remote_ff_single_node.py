@@ -1,11 +1,9 @@
 from gladier import GladierBaseTool, generate_flow_definition
 
-def remote_ff_single_node(**event):  #paramFileName startLayerNr endLayerNr timePath StartFileNrFirstLayer NrFilesPerSweep FileStem SeedFolder StartNr EndNr
+def remote_ff_single_node(**data):  #paramFileName startLayerNr endLayerNr timePath StartFileNrFirstLayer NrFilesPerSweep FileStem SeedFolder StartNr EndNr
 	import numpy as np
-	import os, subprocess, sys
-	import datetime
+	import os, subprocess
 	from pathlib import Path
-	import shutil
 	import h5py
 	import warnings
 	import matplotlib.pyplot as plt
@@ -27,19 +25,19 @@ def remote_ff_single_node(**event):  #paramFileName startLayerNr endLayerNr time
 					return ret_list
 		return ret_list
 
-	paramFN = event.get('paramFileName')
-	startLayerNr = int(event.get('startLayerNr'))
-	endLayerNr = int(event.get('endLayerNr'))
-	time_path = event.get('timePath')
-	startNrFirstLayer = int(event.get('StartFileNrFirstLayer'))
-	nrFilesPerSweep = int(event.get('NrFilesPerSweep'))
-	fStem = event.get('FileStem')
-	topdir = event.get('SeedFolder')
-	startNr = int(event.get('StartNr'))
-	endNr = int(event.get('EndNr'))
-	darkFN = event.get('darkFN')
-	nFrames = event.get('nFrames')
-	numProcs = event.get('numProcs')
+	paramFN = data.get('paramFileName')
+	startLayerNr = int(data.get('startLayerNr'))
+	endLayerNr = int(data.get('endLayerNr'))
+	time_path = data.get('timePath')
+	startNrFirstLayer = int(data.get('StartFileNrFirstLayer'))
+	nrFilesPerSweep = int(data.get('NrFilesPerSweep'))
+	fStem = data.get('FileStem')
+	topdir = data.get('SeedFolder')
+	startNr = int(data.get('StartNr'))
+	endNr = int(data.get('EndNr'))
+	darkFN = data.get('darkFN')
+	nFrames = data.get('nFrames')
+	numProcs = data.get('numProcs')
 	numBlocks = 1
 	blockNr = 0
 	os.chdir(topdir)

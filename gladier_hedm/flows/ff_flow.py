@@ -1,7 +1,6 @@
 # Generate FF Flow
 
 from gladier import GladierBaseClient, generate_flow_definition
-import gladier_tools.publish.publish as publish
 
 
 @generate_flow_definition(modifiers={

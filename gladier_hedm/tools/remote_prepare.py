@@ -1,23 +1,23 @@
 from gladier import GladierBaseTool, generate_flow_definition
 
-def remote_prepare(**event):  #paramFileName startLayerNr endLayerNr timePath StartFileNrFirstLayer NrFilesPerSweep FileStem SeedFolder StartNr EndNr
+def remote_prepare(**data):  #paramFileName startLayerNr endLayerNr timePath StartFileNrFirstLayer NrFilesPerSweep FileStem SeedFolder StartNr EndNr
 	import numpy as np
 	import os, subprocess
 	import datetime
 	from pathlib import Path
 	import shutil
 
-	paramFN = event.get('paramFileName')
-	startLayerNr = int(event.get('startLayerNr'))
-	endLayerNr = int(event.get('endLayerNr'))
-	time_path = event.get('timePath')
-	startNrFirstLayer = int(event.get('StartFileNrFirstLayer'))
-	nrFilesPerSweep = int(event.get('NrFilesPerSweep'))
-	fStem = event.get('FileStem')
-	topdir = event.get('SeedFolder')
-	startNr = int(event.get('StartNr'))
-	endNr = int(event.get('EndNr'))
-	darkFN = event.get('darkFN')
+	paramFN = data.get('paramFileName')
+	startLayerNr = int(data.get('startLayerNr'))
+	endLayerNr = int(data.get('endLayerNr'))
+	time_path = data.get('timePath')
+	startNrFirstLayer = int(data.get('StartFileNrFirstLayer'))
+	nrFilesPerSweep = int(data.get('NrFilesPerSweep'))
+	fStem = data.get('FileStem')
+	topdir = data.get('SeedFolder')
+	startNr = int(data.get('StartNr'))
+	endNr = int(data.get('EndNr'))
+	darkFN = data.get('darkFN')
 	os.chdir(topdir)
 	paramContents = open(paramFN).readlines()
 	baseNameParamFN = paramFN.split('/')[-1]
