@@ -8,12 +8,12 @@ import gladier_tools.publish.publish as publish
 })
 class FFFlow(GladierBaseClient):
     gladier_tools = [
-        # ~ 'gladier_hedm.tools.transfer_inject.Inject',
-        # ~ 'gladier_hedm.tools.remote_prepare.RemotePrepare',
-        # ~ 'gladier_hedm.tools.remote_peaksearch.RemotePeaksearch',   #### Multi - node
-        # ~ 'gladier_hedm.tools.remote_transforms.RemoteTransforms',
-        # ~ 'gladier_hedm.tools.remote_indexrefine.RemoteIndexrefine', #### Multi - node
-        # ~ 'gladier_hedm.tools.remote_process.RemoteFindGrains',
+        'gladier_hedm.tools.transfer_inject.Inject',
+        'gladier_hedm.tools.remote_prepare.RemotePrepare',
+        'gladier_hedm.tools.remote_peaksearch.RemotePeaksearch',   #### Multi - node
+        'gladier_hedm.tools.remote_transforms.RemoteTransforms',
+        'gladier_hedm.tools.remote_indexrefine.RemoteIndexrefine', #### Multi - node
+        'gladier_hedm.tools.remote_process.RemoteFindGrains',
         'gladier_hedm.tools.transfer_extract.Extract',
         'gladier_hedm.tools.remote_publish.Publish'
     ]

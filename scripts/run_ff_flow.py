@@ -33,7 +33,6 @@ if __name__ == '__main__':
 
 	ff_cli = FFFlow()
 	pprint(ff_cli.flow_definition)
-
 	ff_flow = ff_cli.run_flow(flow_input = flow_input)
 	action_id = ff_flow['action_id']
 	ff_cli.progress(action_id)
@@ -41,7 +40,6 @@ if __name__ == '__main__':
 
 	# ~ ff_single_node = FFFlow_SingleNode()
 	# ~ pprint(ff_single_node.flow_definition)
-
 	# ~ ff_flow_single_node = ff_single_node.run_flow(flow_input = flow_input)
 	# ~ action_id = ff_flow_single_node['action_id']
 	# ~ ff_single_node.progress(action_id)

@@ -7,8 +7,8 @@ def setup_input(args):
 		print("Works for a single layer only for now. Please submit individual jobs for each layer")
 	thisT = datetime.datetime.now()
 	tod = datetime.date.today()
-	# ~ timePath = str(tod.year) + '_' + str(tod.month).zfill(2) + '_' + str(tod.day).zfill(2) + '_' + str(thisT.hour).zfill(2) + '_' + str(thisT.minute).zfill(2) + '_' + str(thisT.second).zfill(2)
-	timePath = '2021_12_01_11_19_43'
+	timePath = str(tod.year) + '_' + str(tod.month).zfill(2) + '_' + str(tod.day).zfill(2) + '_' + str(thisT.hour).zfill(2) + '_' + str(thisT.minute).zfill(2) + '_' + str(thisT.second).zfill(2)
+	# ~ timePath = '2022_02_22_14_20_37'
 	paramContents = open(paramFN).readlines()
 	for line in paramContents:
 		if line.startswith('StartFileNrFirstLayer'):
