@@ -9,6 +9,7 @@ from pprint import pprint
 
 def arg_parse():
 	parser = argparse.ArgumentParser(description='''MIDAS_FF
+	hsharma@anl.gov
 	Parameter file, RawFiles (signal and dark) must be in the same folder(RawDir)
 	SeedFolder, RawFolder, Dark must not be present
 	DarkFN, RawDir should be given
@@ -19,7 +20,7 @@ def arg_parse():
 	parser.add_argument('-startLayerNr',type=int,required=True,help='Start Layer Number')
 	parser.add_argument('-endLayerNr',type=int,required=True,help='End Layer Number')
 	parser.add_argument('-paramFile',type=str, required=True, help='ParameterFileName')
-	parser.add_argument('-deployment',type=str, required=True, help='Locations to run. Available: theta-clutch, theta-voyager, edtb-clutch')
+	parser.add_argument('-deployment',type=str, required=True, help='Locations to run. Available: polaris-clutch, theta-clutch, theta-voyager, edtb-clutch')
 	return parser.parse_args()
 
 if __name__ == '__main__':

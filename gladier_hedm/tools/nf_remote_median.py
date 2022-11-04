@@ -9,7 +9,6 @@ def nf_remote_median_args_builder(**data):
 
 def nf_remote_median(**data): # startLayerNr endLayerNr numProcs numBlocks blockNr timePath FileStem SeedFolder
 	import os, shutil, subprocess
-	warnings.filterwarnings('ignore')
 	# Median for each layer
 	topParamFile = data.get('paramFile')
 	OrigFileName = data.get('OrigFileName')
@@ -18,12 +17,13 @@ def nf_remote_median(**data): # startLayerNr endLayerNr numProcs numBlocks block
 	distanceNr = data.get('distanceNr')
 	TopDataDirectory = data.get('TopDataDirectory')
 	PFStem = '.'.join(topParamFile.split('.')[:-1])
-	Folder = 'Analysis/' + '/'.join(OrigFileName.split('/')[:-1])
+	subFolder = TopDataDirectory+'/Analysis/nf/'
+	Folder = OrigFileName.split('/')[-2]
 	for layerNr in range(startLayerNr,endLayerNr+1):
-		newFolder = TopDataDirectory+'/'+Folder+'_Layer_'+str(layerNr)+'/'
+		newFolder = subFolder+'/'+Folder+'_Layer_'+str(layerNr)+'/'
 		os.chdir(newFolder)
 		thisParamFile = PFStem + '_Layer_' + str(layerNr) + '.txt'
-		subprocess.call(os.path.expanduser('~/opt/MIDAS/NF_HEDM/bin/MedianImageLibTiff')+' '+thisParamFile+' '+distanceNr,shell=True)
+		subprocess.call(os.path.expanduser('~/opt/MIDAS/NF_HEDM/bin/MedianImageLibTiff')+' '+thisParamFile+' '+str(distanceNr),shell=True)
 	return 'done'
 
 @generate_flow_definition(modifiers={

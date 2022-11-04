@@ -15,7 +15,6 @@ def setup_nf_input(args):
 			nDistances = int(line.split()[1])
 		if line.startswith('OrigFileName'):
 			OrigFileName = line.split()[1]
-	nFrames = endNr - startNr + 1
 
 	depl = deployment_map.get(args.deployment)
 	depl_input = depl.get_input()
@@ -24,7 +23,7 @@ def setup_nf_input(args):
 	sourcePath = rawDir
 	executePath = depl_input['input']['remote_dir'] + '/' + args.experimentName + '/Analysis/nf/' # This will be where it copies the paramFile and Grains.csv
 	TopDataDirectory = depl_input['input']['remote_dir'] + '/' + args.experimentName
-	executeResultPath = TopDataDirectory+'recon_'+timePath+'.tar.gz'
+	executeResultPath = TopDataDirectory+'/Analysis/nf/'+'recon_'+timePath+'.tar.gz'
 	resultPath = sourcePath + '/recon_'+timePath+'.tar.gz'
 
 	## Set up input
@@ -49,8 +48,7 @@ def setup_nf_input(args):
 	inp.update({'numBlocks':int(args.numNodes)})
 	inp.update({'nDistances':nDistances})
 	inp.update({'timePath':timePath})
-	inp.update({'rawFolder':rawFolder})
-	inp.update({'FF_Seed':args.ff_seed})
+	inp.update({'FF_Seed':args.FF_Seed})
 	inp.update({'experimentName':args.experimentName})
 
 	return inp

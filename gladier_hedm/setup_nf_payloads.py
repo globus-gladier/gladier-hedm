@@ -47,7 +47,7 @@ def SetupNFPayloads(inp):
 				'OrigFileName':inp['OrigFileName'],
 				'paramFile':inp['pfName'],
 				}
-			for idx2 in range(inp['nDistances'])
+			for idx2 in range(1,1+inp['nDistances'])
 		]
 	})
 	return flow_input

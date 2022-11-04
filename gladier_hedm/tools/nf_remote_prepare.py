@@ -6,7 +6,6 @@ def nf_remote_prepare(**data):  #paramFileName startLayerNr endLayerNr timePath 
 	from pathlib import Path
 	import numpy as np
 	
-	warnings.filterwarnings('ignore')
 	def getValueFromParamFile(paramfn,searchStr,nLines=1,wordNr=1,nWords=1):
 		ret_list = []
 		nrLines = 0
@@ -31,9 +30,11 @@ def nf_remote_prepare(**data):  #paramFileName startLayerNr endLayerNr timePath 
 	TopDataDirectory = data.get('TopDataDirectory')
 	OrigFileName = data.get('OrigFileName')
 	
+	subFolder = TopDataDirectory+'/Analysis/nf/'
+	os.chdir(subFolder)
+	
 	# Initial setup
 	extOrig = getValueFromParamFile(topParamFile,'extOrig')[0][0]
-	FullSeedFile = getValueFromParamFile(topParamFile,'FullSeedFile')[0][0]
 	OverallStartNr = int(getValueFromParamFile(topParamFile,'OverallStartNr')[0][0])
 	GlobalPositionFirstLayer = int(getValueFromParamFile(topParamFile,'GlobalPositionFirstLayer')[0][0])
 	LayerThickness = int(getValueFromParamFile(topParamFile,'LayerThickness')[0][0])
@@ -41,31 +42,32 @@ def nf_remote_prepare(**data):  #paramFileName startLayerNr endLayerNr timePath 
 	nDistances = int(getValueFromParamFile(topParamFile,'nDistances')[0][0])
 	NrFilesPerDistance = int(getValueFromParamFile(topParamFile,'NrFilesPerDistance')[0][0])
 	FStem = OrigFileName.split('/')[-1]
-	Folder = 'Analysis/' + '/'.join(OrigFileName.split('/')[:-1])
+	Folder = OrigFileName.split('/')[-2]
 	PFStem = '.'.join(topParamFile.split('.')[:-1])
 	NrFilesPerLayer = (NrFilesPerDistance+WFImages)*nDistances
-	subFolder = TopDataDirectory+'/Analysis/nf'
 	DoGrid = 1
-	
-	os.chdir(TopDataDirectory)
+
 	with open(topParamFile) as tpf:
 		paramContents = tpf.readlines()
 	
 	for layerNr in range(startLayerNr,endLayerNr+1):
-		newFolder = TopDataDirectory+'/'+Folder+'_Layer_'+str(layerNr)+'/'
+		newFolder = subFolder+'/'+Folder+'_Layer_'+str(layerNr)+'/'
 		subprocess.call('mkdir -p '+newFolder+Folder,shell=True)
 		os.chdir(newFolder)
 		startFileNrThisLayer = str((layerNr-1)*NrFilesPerLayer+OverallStartNr).zfill(6)
-		endFileNrThisLayer = str(startFileNrThisLayer + NrFilesPerLayer - 1).zfill(6)
-		if !os.path.isfile(newFolder+'/'+Folder+'/'+FStem+'_'+startFileNrThisLayer+'.'+extOrig) and !os.path.isfile(newFolder+'/'+Folder+'/'+FStem+'_'+endFileNrThisLayer+'.'+extOrig):
-			subprocess.call('mv '+TopDataDirectory+'/'+OrigFileName+'_{'+startFileNrThisLayer+'..'+endFileNrThisLayer+'.'+extOrig+' '+newFolder+'/'+Folder,shell=True)
+		endFileNrThisLayer = str((layerNr)*NrFilesPerLayer+OverallStartNr - 1).zfill(6)
+		if      (not os.path.isfile(newFolder+Folder+'/'+FStem+'_'+startFileNrThisLayer+'.'+extOrig) ) and (not os.path.isfile(newFolder+'/'+Folder+'/'+FStem+'_'+endFileNrThisLayer+'.'+extOrig) ):
+			subprocess.call('mv '+TopDataDirectory+'/'+OrigFileName+'_{'+startFileNrThisLayer+'..'+endFileNrThisLayer+'}.'+extOrig+' '+newFolder+Folder	+'/',shell=True)
 		positionThisLayer = GlobalPositionFirstLayer + LayerThickness*(layerNr-1)
 		thisParamFile = PFStem + '_Layer_' + str(layerNr) + '.txt'
-		reducedFolder = Folder+'_Layer'str(layerNr)+'_Reduced/'
+		reducedFolder = Folder+'_Layer'+str(layerNr)+'_Reduced/'
 		f = open(thisParamFile,'w')
 		for line in paramContents:
-			f.write(line)
-		f.write('RawStartnr '+str(startFileNrThisLayer)+'\n')
+			if line.startswith('OrigFileName'):
+				f.write('OrigFileName '+Folder+'/'+FStem+'\n')
+			else:
+				f.write(line)
+		f.write('RawStartNr '+str(int(startFileNrThisLayer))+'\n')
 		f.write('GlobalPosition '+str(positionThisLayer)+'\n')
 		f.write('MicFileBinary Microstructure_Binary_Layer'+str(layerNr)+'.mic\n')
 		f.write('MicFileText Microstructure_Text_Layer'+str(layerNr)+'.mic\n')
@@ -92,20 +94,21 @@ def nf_remote_prepare(**data):  #paramFileName startLayerNr endLayerNr timePath 
 		with open(SeedOrientations) as so:
 			NrOrients = len(so.readlines())
 		f = open(thisParamFile,'a')
-		f.write('NrOrientations ',str(NrOrients)+'\n')
+		f.write('NrOrientations '+str(NrOrients)+'\n')
 		f.close()
 		if DoGrid == 1:
 			subprocess.call(os.path.expanduser('~/opt/MIDAS/NF_HEDM/bin/MakeHexGrid')+' '+thisParamFile,shell=True)
 			tomoF = getValueFromParamFile(thisParamFile,'TomoImage')
 			if len(tomoF) > 0:
-				tomoPxSize = getValueFromParamFile(thisParamFile,'TomoPixelSize')
+				tomoF = tomoF[0][0]
+				subprocess.call('cp '+subFolder+tomoF+' '+newFolder,shell=True)
+				tomoPxSize = getValueFromParamFile(thisParamFile,'TomoPixelSize')[0][0]
 				subprocess.call(os.path.expanduser('~/opt/MIDAS/NF_HEDM/bin/filterGridfromTomo')+' '+tomoF+' '+tomoPxSize,shell=True)
 				subprocess.call('mv grid.txt grid_unfilt.txt',shell=True)
 				subprocess.call('mv gridNew.txt grid.txt',shell=True)
 			else:
 				gm = getValueFromParamFile(thisParamFile,'GridMask')
 				if (len(gm > 0)):
-					gmSz = getValueFromParamFile(thisParamFile,'GridMask',1,1,4)
 					grid_vals = np.genfromtxt('grid.txt',skip_header=1)
 					subprocess.call('mv grid.txt grid_old.txt',shell=True)
 					grid_vals = grid_vals[:,2]>=float(gmSz[0])
