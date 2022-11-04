@@ -47,6 +47,7 @@ def SetupPayloads(inp):
 			"NrFilesPerSweep":					inp['nrFilesPerSweep'],
 			"FileStem":							inp['fileStem'],
 			"SeedFolder":						inp['seedFolder'],
+			"RawFolder":						inp['rawFolder'],
 			"darkFN":							inp['darkFN'],
 			"StartNr":							inp['startNr'],
 			"EndNr":							inp['endNr'],
@@ -64,6 +65,7 @@ def SetupPayloads(inp):
 				'timePath':inp['timePath'],
 				'FileStem':inp['fileStem'],
 				'SeedFolder':inp['seedFolder'],
+				'RawFolder':inp['rawFolder'],
 				'paramFileName':inp['pfName'],
 				}
 			for idx in range(inp['numBlocks'])

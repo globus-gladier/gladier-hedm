@@ -24,10 +24,11 @@ def remote_indexrefine(**data): # startLayerNr endLayerNr numProcs numBlocks blo
 		nSpotsToIndex = len(open('SpotsToIndex.csv').readlines())
 		subprocess.call(os.path.expanduser("~/opt/MIDAS/FF_HEDM/bin/IndexerOMP")+' paramstest.txt '+str(blockNr)+' '+str(numBlocks)+' '+str(nSpotsToIndex)+' '+str(numProcs),shell=True)
 		subprocess.call(os.path.expanduser("~/opt/MIDAS/FF_HEDM/bin/FitPosOrStrainsOMP")+' paramstest.txt '+str(blockNr)+' '+str(numBlocks)+' '+str(nSpotsToIndex)+' '+str(numProcs),shell=True)
+		subprocess.call('touch tr.txt',shell=True)
 	return 'done'
 
 @generate_flow_definition(modifiers={
-    remote_indexrefine: {'WaitTime': 7200,
+    remote_indexrefine: {'WaitTime': 17200,
 		'tasks':'$.RemoteIndexrefineArgsBuilder.details.result[0]',}
 })
 class RemoteIndexrefine(GladierBaseTool):

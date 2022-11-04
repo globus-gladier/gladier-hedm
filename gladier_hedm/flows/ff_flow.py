@@ -14,7 +14,7 @@ class FFFlow(GladierBaseClient):
         'gladier_hedm.tools.remote_indexrefine.RemoteIndexrefine', #### Multi - node
         'gladier_hedm.tools.remote_process.RemoteFindGrains',
         'gladier_hedm.tools.transfer_extract.Extract',
-        'gladier_hedm.tools.remote_publish.Publish'
+        #'gladier_hedm.tools.remote_publish.Publish'
     ]
 
 

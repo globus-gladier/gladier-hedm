@@ -16,6 +16,7 @@ def remote_find_grains(**data): # startLayerNr endLayerNr timePath FileStem Seed
 		nrLines = 0
 		f = open(paramfn,'r')
 		PSContents = f.readlines()
+		f.close()
 		for line in PSContents:
 			if line.startswith(searchStr+' '):
 				words = line.replace('\t',' ').replace('\n',' ').split(' ')
@@ -150,6 +151,7 @@ def remote_find_grains(**data): # startLayerNr endLayerNr timePath FileStem Seed
 		plt.scatter(Grains[:,22],Grains[:,37]);  plt.xlabel('Grain Radius [\mu m]'); plt.ylabel('E_YY'); plt.savefig(outdir+'/eYYvsRad.png'); plt.clf()
 		plt.scatter(Grains[:,22],Grains[:,41]);  plt.xlabel('Grain Radius [\mu m]'); plt.ylabel('E_ZZ'); plt.savefig(outdir+'/eZZvsRad.png'); plt.clf()
 		resArr.append([outFN,open('Grains.csv','r').readline()])
+		subprocess.call('rm -rf Output Results *.bin tr.txt Input* Temp',shell=True)
 		os.chdir(topdir)
 
 	subprocess.call('tar -czf recon_'+time_path+'.tar.gz *_Analysis_Time_'+time_path+'*',shell=True)

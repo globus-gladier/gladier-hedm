@@ -1,4 +1,4 @@
-# Example: python scripts/run_ff_flow.py -nCPUs=32 -experimentName=KeneseiOct20 -numNodes=2 -startLayerNr=1 -endLayerNr=1 -paramFile=PS_analysis.txt -deployment=theta-clutch
+# Example: anapy3 ~/opt/gladier-hedm/scripts/run_ff_flow.py -nCPUs=32 -experimentName=mpe_feb21 -numNodes=10 -startLayerNr=1 -endLayerNr=1 -paramFile=ps_ff_template.txt -deployment=polaris-clutch
 
 from gladier_hedm.flows import FFFlow
 from gladier_hedm.flows import FFFlow_SingleNode

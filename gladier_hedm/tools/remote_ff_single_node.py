@@ -15,6 +15,7 @@ def remote_ff_single_node(**data):  #paramFileName startLayerNr endLayerNr timeP
 		nrLines = 0
 		f = open(paramfn,'r')
 		PSContents = f.readlines()
+		f.close()
 		for line in PSContents:
 			if line.startswith(searchStr+' '):
 				words = line.replace('\t',' ').replace('\n',' ').split(' ')

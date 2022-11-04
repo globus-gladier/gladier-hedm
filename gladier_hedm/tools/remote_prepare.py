@@ -14,6 +14,7 @@ def remote_prepare(**data):  #paramFileName startLayerNr endLayerNr timePath Sta
 	startNrFirstLayer = int(data.get('StartFileNrFirstLayer'))
 	nrFilesPerSweep = int(data.get('NrFilesPerSweep'))
 	fStem = data.get('FileStem')
+	rawdir = data.get('RawFolder')
 	topdir = data.get('SeedFolder')
 	startNr = int(data.get('StartNr'))
 	endNr = int(data.get('EndNr'))
@@ -33,9 +34,9 @@ def remote_prepare(**data):  #paramFileName startLayerNr endLayerNr timePath Sta
 		thisPF = open(thisParamFN,'w')
 		for line in paramContents:
 			thisPF.write(line)
-		thisPF.write('RawFolder '+topdir+'\n')
+		thisPF.write('RawFolder '+rawdir+'\n')
 		thisPF.write('SeedFolder '+topdir+'\n')
-		thisPF.write('Dark '+topdir+'/'+darkFN+'\n')
+		thisPF.write('Dark '+rawdir+'/'+darkFN+'\n')
 		thisPF.write('Folder '+thisDir+'\n')
 		thisPF.write('LayerNr '+str(layerNr)+'\n')
 		thisPF.write('StartFileNr '+str(thisStartNr)+'\n')
@@ -60,6 +61,7 @@ class RemotePrepare(GladierBaseTool):
         'NrFilesPerSweep',
         'FileStem',
         'SeedFolder',
+        'RawFolder',
         'darkFN',
         'StartNr',
         'EndNr',

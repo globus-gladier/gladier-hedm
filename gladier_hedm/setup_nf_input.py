@@ -1,7 +1,7 @@
 from gladier_hedm.deployments import deployment_map
 import datetime
 
-def setup_input(args):
+def setup_nf_input(args):
 	paramFN = args.paramFile
 	thisT = datetime.datetime.now()
 	tod = datetime.date.today()
@@ -9,20 +9,12 @@ def setup_input(args):
 	# ~ timePath = '2022_02_22_14_20_37'
 	paramContents = open(paramFN).readlines()
 	for line in paramContents:
-		if line.startswith('StartFileNrFirstLayer'):
-			startNrFirstLayer = int(line.split()[1])
-		if line.startswith('NrFilesPerSweep'):
-			nrFilesPerSweep = int(line.split()[1])
-		if line.startswith('FileStem'):
-			fileStem = line.split()[1]
-		if line.startswith('StartNr'):
-			startNr = int(line.split()[1])
-		if line.startswith('EndNr'):
-			endNr = int(line.split()[1])
 		if line.startswith('ResultDir'):
 			rawDir = line.split()[1]
-		if line.startswith('DarkFN'):
-			darkFN = line.split()[1]
+		if line.startswith('nDistances'):
+			nDistances = int(line.split()[1])
+		if line.startswith('OrigFileName'):
+			OrigFileName = line.split()[1]
 	nFrames = endNr - startNr + 1
 
 	depl = deployment_map.get(args.deployment)
@@ -30,11 +22,10 @@ def setup_input(args):
 	
 	## Set up paths
 	sourcePath = rawDir
-	executePath = depl_input['input']['remote_dir'] + '/' + args.experimentName + '/Analysis/ff/' # Add the experiment name here to get a new execute path
-	executeResultPath = executePath+'recon_'+timePath+'.tar.gz'
+	executePath = depl_input['input']['remote_dir'] + '/' + args.experimentName + '/Analysis/nf/' # This will be where it copies the paramFile and Grains.csv
+	TopDataDirectory = depl_input['input']['remote_dir'] + '/' + args.experimentName
+	executeResultPath = TopDataDirectory+'recon_'+timePath+'.tar.gz'
 	resultPath = sourcePath + '/recon_'+timePath+'.tar.gz'
-	seedFolder = executePath
-	rawFolder = depl_input['input']['remote_dir'] + '/' + args.experimentName + '/ge/'
 
 	## Set up input
 	inp = {}
@@ -46,24 +37,20 @@ def setup_input(args):
 	inp.update({'remoteDataEP':depl_input['input']['globus_endpoint_proc']})
 	inp.update({'funcx_endpoint_compute':depl_input['input']['funcx_endpoint_compute']})
 	inp.update({'executePath':executePath})
+	inp.update({'TopDataDirectory':TopDataDirectory})
+	inp.update({'OrigFileName':OrigFileName})
 	inp.update({'executeResultPath':executeResultPath})
 	inp.update({'destEP':depl_input['input']['globus_endpoint_result']})
 	inp.update({'resultPath':resultPath})
 	inp.update({'pfName':paramFN})
 	inp.update({'startLayerNr':int(args.startLayerNr)})
 	inp.update({'endLayerNr':int(args.endLayerNr)})
-	inp.update({'nFrames':nFrames})
 	inp.update({'numProcs':int(args.nCPUs)})
 	inp.update({'numBlocks':int(args.numNodes)})
+	inp.update({'nDistances':nDistances})
 	inp.update({'timePath':timePath})
-	inp.update({'startNrFirstLayer':startNrFirstLayer})
-	inp.update({'nrFilesPerSweep':nrFilesPerSweep})
-	inp.update({'fileStem':fileStem})
-	inp.update({'seedFolder':seedFolder})
 	inp.update({'rawFolder':rawFolder})
-	inp.update({'darkFN':darkFN})
-	inp.update({'startNr':startNr})
-	inp.update({'endNr':endNr})
+	inp.update({'FF_Seed':args.ff_seed})
 	inp.update({'experimentName':args.experimentName})
 
 	return inp
