@@ -26,12 +26,12 @@ def SetupPayloads(inp):
 	flow_input = {
 		"input": {
 			"inject_source_endpoint_id":		inp['sourceEP'],
-			"funcx_endpoint_non_compute":		inp['sourceNCEP'],
+			"compute_endpoint_noqueue":			inp['sourceNCEP'],
 			"proc_endpoint_non_compute":		inp['procNCEP'],
 			"inject_source_path":				inp['sourcePath'],
 			"inject_destination_endpoint_id":	inp['remoteDataEP'],
 			"extract_source_endpoint_id":		inp['remoteDataEP'],
-			"funcx_endpoint_compute":			inp['funcx_endpoint_compute'],
+			"compute_endpoint":					inp['compute_endpoint'],
 			"inject_destination_path":			inp['executePath'],
 			"extract_source_path":				inp['executeResultPath'],
 			"extract_destination_endpoint_id":	inp['destEP'],

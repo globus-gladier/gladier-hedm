@@ -170,9 +170,9 @@ class RemoteFindGrains(GladierBaseTool):
         'timePath',
         'FileStem',
         'SeedFolder',
-        'funcx_endpoint_compute',
+        'compute_endpoint',
     ]
 
-    funcx_functions = [
+    compute_functions = [
         remote_find_grains
     ]

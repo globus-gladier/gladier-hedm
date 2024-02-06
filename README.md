@@ -4,13 +4,13 @@ High-Energy Diffraction Microscopy (HEDM) is a 3D technique which resolves the s
 
 The HEDM flow uses [MIDAS](https://github.com/marinerhemant/MIDAS) for reduction of Near-Field and Far-Field High Energy Diffraction Microscopy (HEDM) data developed at Advanced Photon Source. This flow shows using MIADS for on-demand Far-Field analysis.
 
-The flow is implemented using Globus Flows and relies on funcX to perform remote execution.
+The flow is implemented using Globus Flows and relies on Globus Compute to perform remote execution.
 
 ## Installing Gladier HEDM
 
-To run the flow you will need to configure an appropriate environment for the funcX functions to execute.
+To run the flow you will need to configure an appropriate environment for the Globus Compute functions to execute.
 
-    conda create -n gladier python=3.9 pip
+    conda create -n gladier pip
     conda activate gladier
 
     git clone https://github.com/globus-gladier/gladier-hedm

@@ -31,9 +31,9 @@ class NfRemoteMmap(GladierBaseTool):
         'endLayerNr',
         'OrigFileName',
         'TopDataDirectory',
-        'funcx_endpoint_compute',
+        'compute_endpoint',
     ]
 
-    funcx_functions = [
+    compute_functions = [
         nf_remote_mmap
     ]

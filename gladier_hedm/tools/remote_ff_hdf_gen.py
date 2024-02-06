@@ -156,9 +156,9 @@ class RemoteGenerateHDF(GladierBaseTool):
         'timePath',
         'FileStem',
         'SeedFolder',
-        'funcx_endpoint_compute',
+        'compute_endpoint',
     ]
 
-    funcx_functions = [
+    compute_functions = [
         remote_ff_hdf_gen
     ]

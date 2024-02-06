@@ -41,8 +41,8 @@ def publish_gather_metadata(**data):
             }
         }
     except (PilotClientException, FileOrFolderDoesNotExist):
-        # FuncX does not allow for custom exceptions. Catch and print any pilot errors
-        # so that FuncX does not encounter them.
+        # Globus Compute does not allow for custom exceptions. Catch and print any pilot errors
+        # so that Globus Compute does not encounter them.
         return traceback.format_exc()
 
 
@@ -50,7 +50,7 @@ class Publish(GladierBaseTool):
     """This function uses the globus-pilot tool to generate metadata compatible with
     portals on petreldata.net. Requires globus_pilot>=0.6.0.
     Publication happens in three steps:
-    * PublishGatherMetadata -- A funcx function which uses globus-pilot to gather
+    * PublishGatherMetadata -- A Globus Compute function which uses globus-pilot to gather
       metadata on files or folders
     * PublishTransfer -- Transfers data to the Globus Endpoint selected in Globus Pilot
     * PublishIngest -- Ingest metadata gathered in fist step to Globus Search
@@ -85,8 +85,8 @@ class Publish(GladierBaseTool):
                 'ExceptionOnActionFailure': False,
                 'Parameters': {
                     'tasks': [{
-                        'endpoint.$': '$.input.funcx_endpoint_non_compute',
-                        'function.$': '$.input.publish_gather_metadata_funcx_id',
+                        'endpoint.$': '$.input.compute_endpoint_noqueue',
+                        'function.$': '$.input.publish_gather_metadata_compute_id',
                         'payload.$': '$.input.pilot',
                     }]
                 },
@@ -118,13 +118,13 @@ class Publish(GladierBaseTool):
 
     required_input = [
         'pilot',
-        'funcx_endpoint_non_compute',
+        'compute_endpoint',
     ]
 
     flow_input = {
 
     }
 
-    funcx_functions = [
+    compute_functions = [
         publish_gather_metadata,
     ]

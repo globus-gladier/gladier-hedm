@@ -137,9 +137,9 @@ class NfRemotePrepare(GladierBaseTool):
         'OrigFileName',
         'TopDataDirectory',
         'FF_Seed',
-        'funcx_endpoint_compute',
+        'compute_endpoint',
     ]
 
-    funcx_functions = [
+    compute_functions = [
         nf_remote_prepare
     ]

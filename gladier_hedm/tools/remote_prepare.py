@@ -65,9 +65,9 @@ class RemotePrepare(GladierBaseTool):
         'darkFN',
         'StartNr',
         'EndNr',
-        'funcx_endpoint_compute',
+        'compute_endpoint',
     ]
 
-    funcx_functions = [
+    compute_functions = [
         remote_prepare
     ]

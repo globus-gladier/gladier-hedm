@@ -2,7 +2,7 @@ from gladier import GladierBaseTool, generate_flow_definition
 
 def remote_peaksearch_args_builder(**data):
 	return [{
-		'endpoint':data.get('funcx_endpoint_compute','endpoint-not-found!'),
+		'endpoint':data.get('compute_endpoint','endpoint-not-found!'),
 		'function':data.get('remote_peaksearch_funcx_id','function-id-not-found'),
 		'payload': payload,
 	} for payload in data.get('multipletasks',[])]
@@ -33,12 +33,12 @@ def remote_peaksearch(**data): # startLayerNr endLayerNr nFrames numProcs numBlo
 		'tasks':'$.RemotePeaksearchArgsBuilder.details.result[0]'}
 })
 class RemotePeaksearch(GladierBaseTool):
-    funcx_functions = [
+    compute_functions = [
 		remote_peaksearch_args_builder,
         remote_peaksearch,
     ]
     required_input = [
 		'multipletasks',
-        'funcx_endpoint_compute',
+        'compute_endpoint',
     ]
 

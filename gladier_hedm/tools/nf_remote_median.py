@@ -2,8 +2,8 @@ from gladier import GladierBaseTool, generate_flow_definition
 
 def nf_remote_median_args_builder(**data):
 	return [{
-		'endpoint':data.get('funcx_endpoint_compute','endpoint-not-found!'),
-		'function':data.get('nf_remote_median_funcx_id','function-id-not-found'),
+		'endpoint':data.get('compute_endpoint','endpoint-not-found!'),
+		'function':data.get('nf_remote_median_compute_id','function-id-not-found'),
 		'payload': payload,
 	} for payload in data.get('mediantasks',[])]
 
@@ -31,11 +31,11 @@ def nf_remote_median(**data): # startLayerNr endLayerNr numProcs numBlocks block
 		'tasks':'$.NfRemoteMedianArgsBuilder.details.result[0]',}
 })
 class NfRemoteMedian(GladierBaseTool):
-    funcx_functions = [
+    compute_functions = [
 		nf_remote_median_args_builder,
         nf_remote_median
     ]
     required_input = [
 		'mediantasks',
-		'funcx_endpoint_compute',
+		'compute_endpoint',
     ]

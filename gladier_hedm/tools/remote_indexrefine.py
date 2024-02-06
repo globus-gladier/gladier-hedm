@@ -2,8 +2,8 @@ from gladier import GladierBaseTool, generate_flow_definition
 
 def remote_indexrefine_args_builder(**data):
 	return [{
-		'endpoint':data.get('funcx_endpoint_compute','endpoint-not-found!'),
-		'function':data.get('remote_indexrefine_funcx_id','function-id-not-found'),
+		'endpoint':data.get('compute_endpoint','endpoint-not-found!'),
+		'function':data.get('remote_indexrefine_compute_id','function-id-not-found'),
 		'payload': payload,
 	} for payload in data.get('multipletasks',[])]
 
@@ -32,11 +32,11 @@ def remote_indexrefine(**data): # startLayerNr endLayerNr numProcs numBlocks blo
 		'tasks':'$.RemoteIndexrefineArgsBuilder.details.result[0]',}
 })
 class RemoteIndexrefine(GladierBaseTool):
-    funcx_functions = [
+    compute_functions = [
 		remote_indexrefine_args_builder,
         remote_indexrefine
     ]
     required_input = [
 		'multipletasks',
-		'funcx_endpoint_compute',
+		'compute_endpoint',
     ]

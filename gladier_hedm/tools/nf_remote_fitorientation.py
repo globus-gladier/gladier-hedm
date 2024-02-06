@@ -2,8 +2,8 @@ from gladier import GladierBaseTool, generate_flow_definition
 
 def nf_remote_fitorientation_args_builder(**data):
 	return [{
-		'endpoint':data.get('funcx_endpoint_compute','endpoint-not-found!'),
-		'function':data.get('nf_remote_fitorientation_funcx_id','function-id-not-found'),
+		'endpoint':data.get('compute_endpoint','endpoint-not-found!'),
+		'function':data.get('nf_remote_fitorientation_compute_id','function-id-not-found'),
 		'payload': payload,
 	} for payload in data.get('multipletasks',[])]
 
@@ -33,11 +33,11 @@ def nf_remote_fitorientation(**data): # startLayerNr endLayerNr numProcs numBloc
 		'tasks':'$.NfRemoteFitorientationArgsBuilder.details.result[0]',}
 })
 class NfRemoteFitOrientation(GladierBaseTool):
-    funcx_functions = [
+    compute_functions = [
 		nf_remote_fitorientation_args_builder,
         nf_remote_fitorientation
     ]
     required_input = [
 		'multipletasks',
-		'funcx_endpoint_compute',
+		'compute_endpoint',
     ]

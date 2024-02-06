@@ -211,9 +211,9 @@ class RemoteFFSingleNode(GladierBaseTool):
         'StartNr',
         'EndNr',
         'numBlocks',
-        'funcx_endpoint_compute',
+        'compute_endpoint',
     ]
 
-    funcx_functions = [
+    compute_functions = [
         remote_ff_single_node
     ]

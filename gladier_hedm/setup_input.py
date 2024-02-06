@@ -44,7 +44,7 @@ def setup_input(args):
 	inp.update({'portal_id':depl_input['input']['portal_id']})
 	inp.update({'sourcePath':sourcePath})
 	inp.update({'remoteDataEP':depl_input['input']['globus_endpoint_proc']})
-	inp.update({'funcx_endpoint_compute':depl_input['input']['funcx_endpoint_compute']})
+	inp.update({'compute_endpoint':depl_input['input']['compute_endpoint']})
 	inp.update({'executePath':executePath})
 	inp.update({'executeResultPath':executeResultPath})
 	inp.update({'destEP':depl_input['input']['globus_endpoint_result']})
